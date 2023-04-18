@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.objectorientedoleg.movieroll"
-    compileSdk = 33
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.objectorientedoleg.movieroll"
-        minSdk = 24
-        targetSdk = 33
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 
@@ -38,7 +38,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = libs.versions.jvmTarget.get()
     }
 
     buildFeatures {
@@ -57,20 +57,12 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:ui"))
+
     implementation(libs.androidx.activity.compose)
-    val composeBom = platform(libs.androidx.compose.bom)
-    implementation(composeBom)
-    androidTestImplementation(composeBom)
-    implementation(libs.androidx.compose.material.iconsExtended)
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.ui.ui)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    androidTestImplementation(libs.androidx.compose.ui.test)
     androidTestImplementation(libs.androidx.test.ext)
-    debugImplementation(libs.androidx.compose.ui.testManifest)
-    debugImplementation(libs.androidx.compose.ui.tooling)
 
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
