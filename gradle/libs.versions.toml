@@ -4,6 +4,7 @@ minSdk = "24"
 targetSdk = "33"
 jvmTarget = "11"
 
+accompanist = "0.28.0"
 androidGradlePlugin = "8.0.0"
 androidxActivity = "1.7.0"
 androidxComposeBom = "2023.04.00"
@@ -11,13 +12,16 @@ androidxComposeCompiler = "1.4.5"
 androidxCore = "1.10.0"
 androidxLifecycle = "2.6.1"
 androidxTestExt = "1.1.5"
+coil = "2.2.2"
 junit4 = "4.13.2"
 kotlin = "1.8.20"
 kotlinxCoroutines = "1.6.4"
 
 [libraries]
+accompanist-placeholder = { group = "com.google.accompanist", name = "accompanist-placeholder", version.ref = "accompanist" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
@@ -28,6 +32,8 @@ androidx-compose-ui-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-test-ext = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestExt" }
+coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }

@@ -20,8 +20,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -34,18 +33,32 @@ android {
     kotlinOptions {
         jvmTarget = libs.versions.jvmTarget.get()
     }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
+    }
 }
 
 dependencies {
     val composeBom = platform(libs.androidx.compose.bom)
     api(composeBom)
+    api(libs.androidx.compose.foundation)
     api(libs.androidx.compose.material.iconsExtended)
     api(libs.androidx.compose.material3)
     api(libs.androidx.compose.ui.tooling.preview)
     api(libs.androidx.compose.ui.ui)
+    api(libs.coil)
+    api(libs.coil.compose)
+
     debugApi(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.testManifest)
+
+    implementation(libs.accompanist.placeholder)
 
     androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.compose.ui.test)
-    debugImplementation(libs.androidx.compose.ui.testManifest)
 }
