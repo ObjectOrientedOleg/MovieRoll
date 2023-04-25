@@ -32,7 +32,7 @@ fun AsyncImageWithLoadingShimmer(
     AsyncImage(
         modifier = modifier.placeholder(
             visible = visible,
-            color = MaterialTheme.colorScheme.primaryContainer,
+            color = MaterialTheme.colorScheme.surfaceVariant,
             highlight = highlight
         ),
         model = imageUrl,
