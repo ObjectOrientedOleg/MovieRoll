@@ -30,7 +30,7 @@ private val MaterialThemeElevationLevel2 = 3.dp
 @Composable
 fun PosterWithDetail(
     modifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceVariant,
     posterOnLeft: Boolean = true,
     poster: @Composable () -> Unit,
     detail: @Composable () -> Unit
