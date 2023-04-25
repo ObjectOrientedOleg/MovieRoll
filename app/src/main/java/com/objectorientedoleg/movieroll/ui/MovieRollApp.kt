@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.objectorientedoleg.home.ui.HomeScreen
 import com.objectorientedoleg.ui.theme.MovieRollTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -77,7 +78,7 @@ private fun MovieRollNavHost(navController: NavHostController, modifier: Modifie
         startDestination = TopLevelDestinations.Home.route
     ) {
         composable(TopLevelDestinations.Home.route) {
-            // TODO create home route
+            HomeScreen()
         }
     }
 }
