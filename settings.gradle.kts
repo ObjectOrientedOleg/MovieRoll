@@ -14,5 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Movie Roll"
 include("app")
+include(":core:data")
 include(":core:ui")
 include(":feature:home")
