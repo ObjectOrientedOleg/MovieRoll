@@ -3,11 +3,15 @@ package com.objectorientedoleg.movieroll
 import android.app.Application
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
+import javax.inject.Provider
 
+@HiltAndroidApp
 class MovieRollApplication : Application(), ImageLoaderFactory {
 
-    override fun newImageLoader(): ImageLoader {
-        return ImageLoader.Builder(this)
-            .build()
-    }
+    @Inject
+    lateinit var imageLoader: Provider<ImageLoader>
+
+    override fun newImageLoader(): ImageLoader = imageLoader.get()
 }
