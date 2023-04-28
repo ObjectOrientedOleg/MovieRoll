@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -43,10 +44,16 @@ kapt {
 }
 
 dependencies {
+    implementation(libs.coil)
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.okhttp.logging)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.kotlin.serialization)
+
+    kapt(libs.hilt.compiler)
 
     androidTestImplementation(libs.androidx.test.ext)
 
