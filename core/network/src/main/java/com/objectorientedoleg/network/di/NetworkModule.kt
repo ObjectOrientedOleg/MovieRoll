@@ -9,19 +9,20 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Singleton
 
-@Module
+@OptIn(ExperimentalSerializationApi::class)
+@Module(includes = [InternalNetworkModule::class])
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
     @Provides
     @Singleton
-    fun providesCallFactory(): Call.Factory =
+    fun providesOkHttpClient(): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
@@ -34,16 +35,20 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun providesJson(): Json = Json { ignoreUnknownKeys = true }
+    fun providesJson(): Json =
+        Json {
+            explicitNulls = false
+            ignoreUnknownKeys = true
+        }
 
     @Provides
     @Singleton
     fun providesImageLoader(
         @ApplicationContext context: Context,
-        callFactory: Call.Factory
+        okHttpClient: OkHttpClient
     ): ImageLoader =
         ImageLoader.Builder(context)
-            .callFactory(callFactory)
+            .callFactory(okHttpClient)
             .apply {
                 if (BuildConfig.DEBUG) {
                     logger(DebugLogger())
