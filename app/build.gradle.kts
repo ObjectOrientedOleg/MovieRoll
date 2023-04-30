@@ -72,11 +72,14 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.work.ktx)
     implementation(libs.hilt.android)
+    implementation(libs.hilt.ext.work)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
     kapt(libs.hilt.compiler)
+    kapt(libs.hilt.ext.compiler)
 
     androidTestImplementation(libs.androidx.test.ext)
 
