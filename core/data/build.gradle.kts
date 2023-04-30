@@ -44,9 +44,11 @@ kapt {
 
 dependencies {
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.datetime)
+
+    kapt(libs.hilt.compiler)
 
     androidTestImplementation(libs.androidx.test.ext)
 
