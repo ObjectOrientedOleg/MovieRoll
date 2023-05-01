@@ -8,9 +8,9 @@ import java.util.TreeMap
 
 internal class ImageUrlAssembler(private val configuration: ImageConfiguration) {
 
-    private val backdropSizes = configuration.backdropSizes.toSizeMap()
-    private val posterSizes = configuration.posterSizes.toSizeMap()
-    private val profileSizes = configuration.profileSizes.toSizeMap()
+    private val backdropSizes by lazy { configuration.backdropSizes.toSizeMap() }
+    private val posterSizes by lazy { configuration.posterSizes.toSizeMap() }
+    private val profileSizes by lazy { configuration.profileSizes.toSizeMap() }
 
     fun urlFromParams(imageUrlParams: ImageUrlParams): String? {
         val sizeEntry: Map.Entry<Int, String>? = when (imageUrlParams.type) {
