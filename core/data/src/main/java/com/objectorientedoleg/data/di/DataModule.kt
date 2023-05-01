@@ -9,7 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [InternalDataModule::class])
 @InstallIn(SingletonComponent::class)
 object DataModule {
 

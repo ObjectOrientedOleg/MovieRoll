@@ -1,6 +1,8 @@
 package com.objectorientedoleg.data.repository
 
 import androidx.annotation.GuardedBy
+import com.objectorientedoleg.common.scope.MovieRollScope.*
+import com.objectorientedoleg.common.scope.Scope
 import com.objectorientedoleg.data.model.ImageUrlParams
 import com.objectorientedoleg.data.model.asModel
 import com.objectorientedoleg.data.sync.Synchronizer
@@ -18,7 +20,7 @@ import javax.inject.Inject
 internal class ImageUrlRepositoryImpl @Inject constructor(
     private val imageConfigurationDao: ImageConfigurationDao,
     private val networkDataSource: MovieRollNetworkDataSource,
-    scope: CoroutineScope
+    @Scope(IO) scope: CoroutineScope
 ) : ImageUrlRepository {
 
     private val mutex = Mutex()
