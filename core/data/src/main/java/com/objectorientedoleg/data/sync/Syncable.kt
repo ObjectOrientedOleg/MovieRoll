@@ -1,6 +1,6 @@
 package com.objectorientedoleg.data.sync
 
-internal interface Syncable {
+interface Syncable {
 
     suspend fun sync(synchronizer: Synchronizer): Boolean
 }

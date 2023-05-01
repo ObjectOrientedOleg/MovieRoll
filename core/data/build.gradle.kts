@@ -44,6 +44,7 @@ kapt {
 
 dependencies {
     implementation(project(":core:database"))
+    implementation(project(":core:network"))
 
     implementation(libs.androidx.work.ktx)
     implementation(libs.hilt.android)
