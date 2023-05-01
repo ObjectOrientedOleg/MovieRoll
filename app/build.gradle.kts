@@ -63,6 +63,7 @@ kapt {
 }
 
 dependencies {
+    implementation(project(":core:data"))
     implementation(project(":core:network"))
     implementation(project(":core:ui"))
     implementation(project(":feature:home"))
