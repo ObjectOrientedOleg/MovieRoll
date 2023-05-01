@@ -1,4 +1,4 @@
-package com.objectorientedoleg.data.sync
+package com.objectorientedoleg.data.sync.util
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant

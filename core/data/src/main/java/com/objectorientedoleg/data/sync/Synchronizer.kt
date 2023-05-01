@@ -1,5 +1,6 @@
 package com.objectorientedoleg.data.sync
 
+import com.objectorientedoleg.data.sync.util.isSyncValid
 import kotlinx.datetime.Instant
 import javax.inject.Inject
 
