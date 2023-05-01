@@ -43,6 +43,8 @@ kapt {
 }
 
 dependencies {
+    implementation(project(":core:database"))
+
     implementation(libs.androidx.work.ktx)
     implementation(libs.hilt.android)
     implementation(libs.hilt.ext.work)
@@ -57,4 +59,5 @@ dependencies {
 
     testImplementation(libs.junit4)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
 }

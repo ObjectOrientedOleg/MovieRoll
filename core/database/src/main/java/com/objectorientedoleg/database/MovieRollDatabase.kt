@@ -6,6 +6,7 @@ import androidx.room.TypeConverters
 import com.objectorientedoleg.database.dao.ImageConfigurationDao
 import com.objectorientedoleg.database.model.ImageConfigurationEntity
 import com.objectorientedoleg.database.util.InstantConverter
+import com.objectorientedoleg.database.util.StringListConverter
 
 internal const val DatabaseName = "movie-roll-database"
 
@@ -14,7 +15,10 @@ internal const val DatabaseName = "movie-roll-database"
     version = 1,
     exportSchema = true
 )
-@TypeConverters(InstantConverter::class)
+@TypeConverters(
+    InstantConverter::class,
+    StringListConverter::class
+)
 abstract class MovieRollDatabase : RoomDatabase() {
 
     abstract fun imageConfigurationDao(): ImageConfigurationDao
