@@ -48,6 +48,7 @@ dependencies {
     implementation(project(":core:network"))
 
     implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.work.ktx)
     implementation(libs.hilt.android)
     implementation(libs.hilt.ext.work)
