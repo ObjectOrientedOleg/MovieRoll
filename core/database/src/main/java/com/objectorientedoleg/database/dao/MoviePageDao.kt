@@ -11,7 +11,7 @@ import kotlinx.datetime.Instant
 interface MoviePageDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(pageEntity: MoviePageEntity)
+    suspend fun insert(moviePageEntity: MoviePageEntity)
 
     @Query("SELECT creation_date FROM movie_page_table WHERE movie_type = :movieType ORDER BY creation_date ASC")
     suspend fun lastUpdated(movieType: String): Instant?
