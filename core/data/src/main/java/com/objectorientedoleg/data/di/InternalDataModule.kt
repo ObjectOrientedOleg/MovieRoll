@@ -2,6 +2,8 @@ package com.objectorientedoleg.data.di
 
 import com.objectorientedoleg.data.repository.ImageUrlRepository
 import com.objectorientedoleg.data.repository.ImageUrlRepositoryImpl
+import com.objectorientedoleg.data.repository.MoviesRepository
+import com.objectorientedoleg.data.repository.MoviesRepositoryImpl
 import com.objectorientedoleg.data.sync.SyncManager
 import com.objectorientedoleg.data.sync.SyncManagerImpl
 import com.objectorientedoleg.data.sync.Synchronizer
@@ -21,6 +23,12 @@ internal interface InternalDataModule {
     fun bindsImageUrlRepository(
         impl: ImageUrlRepositoryImpl
     ): ImageUrlRepository
+
+    @Binds
+    @Singleton
+    fun bindsMoviesRepository(
+        impl: MoviesRepositoryImpl
+    ): MoviesRepository
 
     @Binds
     @Singleton

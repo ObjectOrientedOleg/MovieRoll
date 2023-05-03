@@ -1,8 +1,11 @@
 package com.objectorientedoleg.data.sync
 
-import com.objectorientedoleg.data.sync.util.isSyncValid
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.datetime.toDateTimePeriod
 import javax.inject.Inject
+
+private const val SyncExpirationInMinutes = 60
 
 internal class SynchronizerImpl @Inject constructor() : Synchronizer {
 
@@ -11,7 +14,7 @@ internal class SynchronizerImpl @Inject constructor() : Synchronizer {
         onFetchUpdate: suspend () -> Result<T>,
         onRunUpdate: suspend (T) -> Boolean
     ): Boolean {
-        if (isSyncValid(syncDate())) return true
+        if (isDataValid(syncDate())) return true
 
         val result = onFetchUpdate()
         return if (result.isSuccess) {
@@ -20,5 +23,12 @@ internal class SynchronizerImpl @Inject constructor() : Synchronizer {
         } else {
             false
         }
+    }
+
+    override fun isDataValid(syncDate: Instant?): Boolean {
+        if (syncDate == null) return false
+
+        val timeElapsed = (Clock.System.now() - syncDate).toDateTimePeriod()
+        return timeElapsed.minutes <= SyncExpirationInMinutes
     }
 }

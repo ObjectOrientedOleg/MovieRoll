@@ -14,6 +14,7 @@ androidxLifecycle = "2.6.1"
 androidxNavigation = "2.5.3"
 androidxPaging = "3.1.1"
 androidxPagingCompose = "1.0.0-alpha18"
+androidxPalette = "1.0.0"
 androidxRoom = "2.5.1"
 androidxTestExt = "1.1.5"
 androidxWork = "2.8.1"
@@ -51,6 +52,7 @@ androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecyc
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
 androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "androidxPagingCompose" }
 androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "androidxPaging" }
+androidx-palette-ktx = { group = "androidx.palette", name = "palette-ktx", version.ref = "androidxPalette" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidxRoom" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "androidxRoom" }
 androidx-room-paging = { group = "androidx.room", name = "room-paging", version.ref = "androidxRoom" }

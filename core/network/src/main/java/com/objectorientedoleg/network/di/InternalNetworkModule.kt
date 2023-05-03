@@ -2,6 +2,8 @@ package com.objectorientedoleg.network.di
 
 import com.objectorientedoleg.network.MovieRollNetworkDataSource
 import com.objectorientedoleg.network.datasource.MovieRollNetworkDataSourceImpl
+import com.objectorientedoleg.network.loader.NetworkBitmapLoader
+import com.objectorientedoleg.network.loader.NetworkBitmapLoaderImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,4 +19,9 @@ internal interface InternalNetworkModule {
     fun bindsMovieRollNetworkDataSource(
         impl: MovieRollNetworkDataSourceImpl
     ): MovieRollNetworkDataSource
+
+    @Binds
+    fun bindsNetworkBitmapLoader(
+        impl: NetworkBitmapLoaderImpl
+    ): NetworkBitmapLoader
 }

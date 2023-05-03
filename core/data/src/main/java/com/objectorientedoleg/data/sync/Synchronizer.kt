@@ -9,4 +9,6 @@ interface Synchronizer {
         onFetchUpdate: suspend () -> Result<T>,
         onRunUpdate: suspend (T) -> Boolean
     ): Boolean
+
+    fun isDataValid(syncDate: Instant?): Boolean
 }

@@ -49,6 +49,8 @@ kapt {
 }
 
 dependencies {
+    implementation(project(":core:common"))
+
     implementation(libs.coil)
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.coroutines.core)
