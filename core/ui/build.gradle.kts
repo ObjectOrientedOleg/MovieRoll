@@ -2,9 +2,7 @@
 
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -45,10 +43,6 @@ android {
     }
 }
 
-kapt {
-    correctErrorTypes = true
-}
-
 dependencies {
     val composeBom = platform(libs.androidx.compose.bom)
     api(composeBom)
@@ -63,14 +57,12 @@ dependencies {
     debugApi(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.testManifest)
 
-    implementation(project(":core:common"))
-    implementation(project(":core:network"))
+    implementation(project(":core:colorpalette"))
+    implementation(project(":core:domain"))
 
     implementation(libs.accompanist.placeholder)
-    implementation(libs.androidx.palette.ktx)
-    implementation(libs.hilt.android)
-
-    kapt(libs.hilt.compiler)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.runtime)
 
     androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.compose.ui.test)

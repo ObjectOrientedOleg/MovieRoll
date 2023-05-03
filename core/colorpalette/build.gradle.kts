@@ -5,11 +5,10 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
-    namespace = "com.objectorientedoleg.home"
+    namespace = "com.objectorientedoleg.colorpalette"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -52,21 +51,14 @@ kapt {
 }
 
 dependencies {
-    implementation(project(":core:data"))
-    implementation(project(":core:domain"))
-    implementation(project(":core:ui"))
+    implementation(project(":core:common"))
+    implementation(project(":core:network"))
 
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.lifecycle.viewModelCompose)
-    implementation(libs.androidx.paging.runtime)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui.ui)
+    implementation(libs.androidx.palette.ktx)
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.coroutines.android)
 
     kapt(libs.hilt.compiler)
-
-    androidTestImplementation(libs.androidx.test.ext)
-
-    testImplementation(libs.junit4)
-    testImplementation(libs.kotlinx.coroutines.test)
 }

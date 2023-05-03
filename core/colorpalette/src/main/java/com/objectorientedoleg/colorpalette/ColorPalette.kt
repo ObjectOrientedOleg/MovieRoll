@@ -1,4 +1,4 @@
-package com.objectorientedoleg.ui.palette
+package com.objectorientedoleg.colorpalette
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color

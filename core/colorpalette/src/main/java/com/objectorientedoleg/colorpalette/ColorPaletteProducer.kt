@@ -1,4 +1,4 @@
-package com.objectorientedoleg.ui.palette
+package com.objectorientedoleg.colorpalette
 
 interface ColorPaletteProducer {
 

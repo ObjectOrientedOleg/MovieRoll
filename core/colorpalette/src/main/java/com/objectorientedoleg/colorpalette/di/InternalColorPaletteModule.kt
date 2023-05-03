@@ -1,7 +1,7 @@
-package com.objectorientedoleg.ui.di
+package com.objectorientedoleg.colorpalette.di
 
-import com.objectorientedoleg.ui.palette.ColorPaletteProducer
-import com.objectorientedoleg.ui.palette.ColorPaletteProducerImpl
+import com.objectorientedoleg.colorpalette.ColorPaletteProducer
+import com.objectorientedoleg.colorpalette.ColorPaletteProducerImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -9,7 +9,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal interface InternalUiModule {
+internal interface InternalColorPaletteModule {
 
     @Binds
     fun bindsColorPaletteProducer(

@@ -10,10 +10,12 @@ import com.objectorientedoleg.common.dispatchers.MovieRollDispatchers.*
 import com.objectorientedoleg.data.model.Movie
 import com.objectorientedoleg.data.model.asModel
 import com.objectorientedoleg.data.paging.LocalMoviesDataSource
+import com.objectorientedoleg.data.paging.MoviesFirstPageIndex
 import com.objectorientedoleg.data.paging.MoviesPageSize
 import com.objectorientedoleg.data.paging.MoviesRemoteMediator
 import com.objectorientedoleg.data.paging.RemoteMoviesDataSource
 import com.objectorientedoleg.data.sync.Synchronizer
+import com.objectorientedoleg.data.type.MovieType
 import com.objectorientedoleg.database.model.MovieEntity
 import com.objectorientedoleg.database.model.MoviePageEntity
 import com.objectorientedoleg.database.proxy.MovieRollDatabaseProxy
@@ -46,10 +48,7 @@ internal class MoviesRepositoryImpl @Inject constructor(
             ),
             pagingSourceFactory = { database.movieDao.getMovies(movieType.name) }
         )
-        return pager.flow
-            .map { pagingData ->
-                pagingData.map { movieEntity -> movieEntity.asModel() }
-            }
+        return pager.flow.map(PagingData<MovieEntity>::asModels)
     }
 
     override suspend fun sync(synchronizer: Synchronizer): Boolean = withContext(ioDispatcher) {
@@ -60,7 +59,7 @@ internal class MoviesRepositoryImpl @Inject constructor(
                     return@async true
                 }
                 val remoteSource = remoteMoviesDataSourceFor(movieType)
-                val result = remoteSource.loadMovies(1)
+                val result = remoteSource.loadMovies(MoviesFirstPageIndex)
                 if (result.isFailure) {
                     return@async false
                 }
@@ -106,6 +105,8 @@ internal class MoviesRepositoryImpl @Inject constructor(
             }
         }
 }
+
+private fun PagingData<MovieEntity>.asModels() = map { it.asModel() }
 
 private fun NetworkMovies.asMoviePageEntity(id: String, movieType: MovieType) =
     MoviePageEntity(
