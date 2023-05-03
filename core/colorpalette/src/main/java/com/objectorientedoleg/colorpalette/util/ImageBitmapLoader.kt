@@ -1,4 +1,4 @@
-package com.objectorientedoleg.network.loader
+package com.objectorientedoleg.colorpalette.util
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -15,16 +15,16 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-internal class NetworkBitmapLoaderImpl @Inject constructor(
+internal class ImageBitmapLoader @Inject constructor(
     @ApplicationContext private val context: Context,
     private val imageLoader: ImageLoader,
     @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher
-) : NetworkBitmapLoader {
+) {
 
-    override suspend fun bitmapFromImage(imageUrl: String): Result<Bitmap> =
+    suspend fun bitmapFromImage(imageUri: String): Result<Bitmap> =
         withContext(ioDispatcher) {
             val request = ImageRequest.Builder(context)
-                .data(imageUrl)
+                .data(imageUri)
                 .allowHardware(false)
                 .build()
             when (val result = imageLoader.executeBlocking(request)) {
@@ -32,6 +32,7 @@ internal class NetworkBitmapLoaderImpl @Inject constructor(
                     val bitmap = result.drawable.toBitmap()
                     Result.success(bitmap)
                 }
+
                 is ErrorResult -> Result.failure(result.throwable)
             }
         }

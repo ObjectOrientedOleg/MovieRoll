@@ -2,5 +2,5 @@ package com.objectorientedoleg.colorpalette
 
 interface ColorPaletteProducer {
 
-    suspend fun paletteFromImage(imageUrl: String): Result<ColorPalette>
+    suspend fun paletteFromImage(imageUri: String): Result<ColorPalette>
 }

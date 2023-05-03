@@ -53,7 +53,6 @@ dependencies {
 
     implementation(libs.coil)
     implementation(libs.hilt.android)
-    implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.okhttp.logging)

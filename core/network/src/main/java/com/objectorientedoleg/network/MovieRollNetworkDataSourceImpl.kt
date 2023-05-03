@@ -1,8 +1,6 @@
-package com.objectorientedoleg.network.datasource
+package com.objectorientedoleg.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.objectorientedoleg.network.BuildConfig
-import com.objectorientedoleg.network.MovieRollNetworkDataSource
 import com.objectorientedoleg.network.intercepter.OAuthInterceptor
 import com.objectorientedoleg.network.model.NetworkConfiguration
 import com.objectorientedoleg.network.model.NetworkImageConfiguration

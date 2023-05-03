@@ -56,7 +56,9 @@ dependencies {
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui.ui)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.palette.ktx)
+    implementation(libs.coil)
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.coroutines.android)
 
