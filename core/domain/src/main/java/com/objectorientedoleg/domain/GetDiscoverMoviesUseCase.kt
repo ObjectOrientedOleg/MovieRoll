@@ -3,10 +3,10 @@ package com.objectorientedoleg.domain
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.objectorientedoleg.colorpalette.ColorPaletteProducer
-import com.objectorientedoleg.data.model.ImageType
 import com.objectorientedoleg.data.model.ImageUrlParams
 import com.objectorientedoleg.data.repository.ImageUrlRepository
 import com.objectorientedoleg.data.repository.MoviesRepository
+import com.objectorientedoleg.data.type.ImageType
 import com.objectorientedoleg.data.type.MovieType
 import com.objectorientedoleg.domain.model.DiscoverMovie
 import kotlinx.coroutines.flow.Flow

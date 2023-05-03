@@ -1,8 +1,8 @@
 package com.objectorientedoleg.data.util
 
 import com.objectorientedoleg.data.model.ImageConfiguration
-import com.objectorientedoleg.data.model.ImageType
 import com.objectorientedoleg.data.model.ImageUrlParams
+import com.objectorientedoleg.data.type.ImageType
 import java.util.NavigableMap
 import java.util.TreeMap
 

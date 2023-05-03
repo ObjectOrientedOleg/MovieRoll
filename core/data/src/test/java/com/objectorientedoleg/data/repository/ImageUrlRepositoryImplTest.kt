@@ -1,7 +1,7 @@
 package com.objectorientedoleg.data.repository
 
-import com.objectorientedoleg.data.model.ImageType
 import com.objectorientedoleg.data.model.ImageUrlParams
+import com.objectorientedoleg.data.type.ImageType
 import com.objectorientedoleg.database.dao.ImageConfigurationDao
 import com.objectorientedoleg.database.model.ImageConfigurationEntity
 import com.objectorientedoleg.network.MovieRollNetworkDataSource

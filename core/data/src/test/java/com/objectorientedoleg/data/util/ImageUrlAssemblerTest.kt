@@ -1,8 +1,8 @@
 package com.objectorientedoleg.data.util
 
 import com.objectorientedoleg.data.model.ImageConfiguration
-import com.objectorientedoleg.data.model.ImageType
 import com.objectorientedoleg.data.model.ImageUrlParams
+import com.objectorientedoleg.data.type.ImageType
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertTrue
