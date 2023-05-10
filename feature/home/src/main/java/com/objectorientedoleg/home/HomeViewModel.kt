@@ -1,6 +1,5 @@
 package com.objectorientedoleg.home
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -20,7 +19,7 @@ import javax.inject.Inject
 internal class HomeViewModel @Inject constructor(
     syncManager: SyncManager,
     getDiscoverMoviesUseCase: GetDiscoverMoviesUseCase,
-    private val savedStateHandle: SavedStateHandle
+    configuration: HomeScreenConfiguration
 ) : ViewModel() {
 
     val isSyncing: StateFlow<Boolean> = syncManager.isSyncing.stateIn(
@@ -30,24 +29,19 @@ internal class HomeViewModel @Inject constructor(
     )
 
     val nowPlayingMovies: Flow<PagingData<DiscoverMovie>> =
-        getDiscoverMoviesUseCase(MovieType.NowPlaying)
+        getDiscoverMoviesUseCase(MovieType.NowPlaying, configuration)
 
     val popularMovies: Flow<PagingData<DiscoverMovie>> =
-        getDiscoverMoviesUseCase(MovieType.Popular)
+        getDiscoverMoviesUseCase(MovieType.Popular, configuration)
 
     val topRatedMovies: Flow<PagingData<DiscoverMovie>> =
-        getDiscoverMoviesUseCase(MovieType.TopRated)
+        getDiscoverMoviesUseCase(MovieType.TopRated, configuration)
 
     val upcomingMovies: Flow<PagingData<DiscoverMovie>> =
-        getDiscoverMoviesUseCase(MovieType.UpComing)
+        getDiscoverMoviesUseCase(MovieType.UpComing, configuration)
 
     private operator fun GetDiscoverMoviesUseCase.invoke(
-        movieType: MovieType
-    ): Flow<PagingData<DiscoverMovie>> {
-        val configuration = checkNotNull(
-            savedStateHandle.get<HomeScreenConfiguration>(ConfigurationArg)
-        )
-        return this(movieType, configuration.discoverPosterSize)
-            .cachedIn(viewModelScope)
-    }
+        movieType: MovieType,
+        configuration: HomeScreenConfiguration
+    ) = this(movieType, configuration.discoverPosterSize).cachedIn(viewModelScope)
 }

@@ -1,9 +1,15 @@
 package com.objectorientedoleg.home
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import android.content.Context
+import androidx.annotation.Px
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-internal const val ConfigurationArg = "HomeScreenConfiguration"
+internal class HomeScreenConfiguration @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
 
-@Parcelize
-internal data class HomeScreenConfiguration(val discoverPosterSize: Int) : Parcelable
+    @get:Px
+    val discoverPosterSize: Int
+        get() = context.resources.getDimensionPixelSize(R.dimen.home_discover_poster_size)
+}

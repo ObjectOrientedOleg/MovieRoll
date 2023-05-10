@@ -1,6 +1,7 @@
-package com.objectorientedoleg.home.ui
+package com.objectorientedoleg.home
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -11,13 +12,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.objectorientedoleg.home.R
 import com.objectorientedoleg.ui.theme.MovieRollTheme
+
+@Composable
+internal fun HomeRoute(modifier: Modifier = Modifier) {
+    HomeScreen(modifier)
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+private fun HomeScreen(modifier: Modifier = Modifier) {
     Scaffold(
+        modifier = modifier.fillMaxSize(),
         topBar = { HomeTopBar() }
     ) { innerPadding ->
 

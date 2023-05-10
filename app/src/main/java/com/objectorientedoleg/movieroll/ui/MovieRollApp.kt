@@ -19,11 +19,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.objectorientedoleg.home.ui.HomeScreen
+import com.objectorientedoleg.home.navigation.homeScreen
 import com.objectorientedoleg.ui.theme.MovieRollTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -95,8 +94,6 @@ private fun MovieRollNavHost(navController: NavHostController, modifier: Modifie
         navController = navController,
         startDestination = TopLevelDestinations.Home.route
     ) {
-        composable(TopLevelDestinations.Home.route) {
-            HomeScreen()
-        }
+        homeScreen(TopLevelDestinations.Home.route)
     }
 }
