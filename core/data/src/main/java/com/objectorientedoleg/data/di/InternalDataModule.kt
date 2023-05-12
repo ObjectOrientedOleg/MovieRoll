@@ -1,5 +1,7 @@
 package com.objectorientedoleg.data.di
 
+import com.objectorientedoleg.data.repository.GenreRepository
+import com.objectorientedoleg.data.repository.GenreRepositoryImpl
 import com.objectorientedoleg.data.repository.ImageUrlRepository
 import com.objectorientedoleg.data.repository.ImageUrlRepositoryImpl
 import com.objectorientedoleg.data.repository.MoviesRepository
@@ -17,6 +19,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 internal interface InternalDataModule {
+
+    @Binds
+    @Singleton
+    fun bindsGenreRepository(
+        impl: GenreRepositoryImpl
+    ): GenreRepository
 
     @Binds
     @Singleton

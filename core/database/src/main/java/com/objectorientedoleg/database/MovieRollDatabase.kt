@@ -3,10 +3,12 @@ package com.objectorientedoleg.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.objectorientedoleg.database.dao.GenreDao
 import com.objectorientedoleg.database.dao.ImageConfigurationDao
 import com.objectorientedoleg.database.dao.MovieDao
 import com.objectorientedoleg.database.dao.MovieDetailsDao
 import com.objectorientedoleg.database.dao.MoviePageDao
+import com.objectorientedoleg.database.model.GenreEntity
 import com.objectorientedoleg.database.model.ImageConfigurationEntity
 import com.objectorientedoleg.database.model.MovieDetailsEntity
 import com.objectorientedoleg.database.model.MovieEntity
@@ -22,6 +24,7 @@ internal const val DatabaseName = "movie_roll_database"
 
 @Database(
     entities = [
+        GenreEntity::class,
         ImageConfigurationEntity::class,
         MovieDetailsEntity::class,
         MovieEntity::class,
@@ -39,6 +42,8 @@ internal const val DatabaseName = "movie_roll_database"
     StringListConverter::class
 )
 abstract class MovieRollDatabase : RoomDatabase() {
+
+    abstract fun genreDao(): GenreDao
 
     abstract fun imageConfigurationDao(): ImageConfigurationDao
 

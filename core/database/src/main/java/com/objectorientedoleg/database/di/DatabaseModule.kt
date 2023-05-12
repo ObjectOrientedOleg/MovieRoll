@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.objectorientedoleg.database.DatabaseName
 import com.objectorientedoleg.database.MovieRollDatabase
+import com.objectorientedoleg.database.dao.GenreDao
 import com.objectorientedoleg.database.dao.ImageConfigurationDao
 import com.objectorientedoleg.database.dao.MovieDao
 import com.objectorientedoleg.database.dao.MovieDetailsDao
@@ -29,6 +30,11 @@ object DatabaseModule {
             MovieRollDatabase::class.java,
             DatabaseName
         ).build()
+
+    @Provides
+    fun providesGenreDao(
+        database: MovieRollDatabase
+    ): GenreDao = database.genreDao()
 
     @Provides
     fun providesImageConfigurationDao(

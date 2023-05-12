@@ -2,6 +2,7 @@ package com.objectorientedoleg.database.proxy
 
 import androidx.room.withTransaction
 import com.objectorientedoleg.database.MovieRollDatabase
+import com.objectorientedoleg.database.dao.GenreDao
 import com.objectorientedoleg.database.dao.ImageConfigurationDao
 import com.objectorientedoleg.database.dao.MovieDao
 import com.objectorientedoleg.database.dao.MovieDetailsDao
@@ -11,6 +12,8 @@ import javax.inject.Inject
 internal class MovieRollDatabaseProxyImpl @Inject constructor(
     private val database: MovieRollDatabase
 ) : MovieRollDatabaseProxy {
+
+    override val genreDao: GenreDao get() = database.genreDao()
 
     override val imageConfigurationDao: ImageConfigurationDao get() = database.imageConfigurationDao()
 

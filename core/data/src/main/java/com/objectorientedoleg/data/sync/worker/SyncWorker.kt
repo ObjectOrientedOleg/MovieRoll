@@ -18,6 +18,7 @@ import androidx.work.WorkerParameters
 import com.objectorientedoleg.common.dispatchers.Dispatcher
 import com.objectorientedoleg.common.dispatchers.MovieRollDispatchers.*
 import com.objectorientedoleg.data.R
+import com.objectorientedoleg.data.repository.GenreRepository
 import com.objectorientedoleg.data.repository.ImageUrlRepository
 import com.objectorientedoleg.data.repository.MoviesRepository
 import com.objectorientedoleg.data.sync.Synchronizer
@@ -33,6 +34,7 @@ class SyncWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
     private val synchronizer: Synchronizer,
+    private val genreRepository: GenreRepository,
     private val imageUrlRepository: ImageUrlRepository,
     private val moviesRepository: MoviesRepository,
     @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher
@@ -43,6 +45,7 @@ class SyncWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result = withContext(ioDispatcher) {
         val syncedSuccessfully = awaitAll(
+            async { genreRepository.sync(synchronizer) },
             async { imageUrlRepository.sync(synchronizer) },
             async { moviesRepository.sync(synchronizer) }
         ).all { it }
