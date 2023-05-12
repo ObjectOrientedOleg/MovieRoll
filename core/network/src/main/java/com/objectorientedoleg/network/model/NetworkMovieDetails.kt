@@ -9,7 +9,7 @@ data class NetworkMovieDetails(
     @SerialName("backdrop_path") val backdropPath: String?,
     @SerialName("budget") val budget: Int,
     @SerialName("credits") val credits: Credits,
-    @SerialName("genres") val genres: List<Genre>,
+    @SerialName("genres") val genres: List<NetworkGenre>,
     @SerialName("homepage") val homepage: String?,
     @SerialName("id") val id: Int,
     @SerialName("images") val images: Images,
@@ -66,12 +66,6 @@ data class NetworkMovieDetails(
             @SerialName("profile_path") val profilePath: String?
         )
     }
-
-    @Serializable
-    data class Genre(
-        @SerialName("id") val id: Int,
-        @SerialName("name") val name: String
-    )
 
     @Serializable
     data class Images(

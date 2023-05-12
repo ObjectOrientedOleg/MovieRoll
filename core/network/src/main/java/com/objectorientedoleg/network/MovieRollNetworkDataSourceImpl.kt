@@ -3,6 +3,7 @@ package com.objectorientedoleg.network
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.objectorientedoleg.network.intercepter.OAuthInterceptor
 import com.objectorientedoleg.network.model.NetworkConfiguration
+import com.objectorientedoleg.network.model.NetworkGenres
 import com.objectorientedoleg.network.model.NetworkImageConfiguration
 import com.objectorientedoleg.network.model.NetworkMovieDetails
 import com.objectorientedoleg.network.model.NetworkMovies
@@ -37,6 +38,12 @@ internal class MovieRollNetworkDataSourceImpl @Inject constructor(
     override suspend fun getImageConfiguration(): Result<NetworkImageConfiguration> =
         suspendRunCatching { service.getConfiguration().imageConfiguration }
 
+    override suspend fun getGenres(): Result<NetworkGenres> =
+        suspendRunCatching { service.getGenres() }
+
+    override suspend fun getMoviesByGenre(genreId: Int, page: Int): Result<NetworkMovies> =
+        suspendRunCatching { service.getMoviesByGenre(genreId, page) }
+
     override suspend fun getNowPlayingMovies(page: Int): Result<NetworkMovies> =
         suspendRunCatching { service.getNowPlayingMovies(page) }
 
@@ -57,6 +64,19 @@ private interface TheMovieDatabaseService {
 
     @GET("configuration")
     suspend fun getConfiguration(): NetworkConfiguration
+
+    @GET("genre/movie/list")
+    suspend fun getGenres(@Query("language") language: String = "en-US"): NetworkGenres
+
+    @GET("discover/movie")
+    suspend fun getMoviesByGenre(
+        @Query("with_genres") genreId: Int,
+        @Query("page") page: Int,
+        @Query("include_adult") includeAdult: Boolean = false,
+        @Query("include_video") includeVideo: Boolean = false,
+        @Query("language") language: String = "en-US",
+        @Query("region") region: String = "US"
+    ): NetworkMovies
 
     @GET("movie/now_playing")
     suspend fun getNowPlayingMovies(
