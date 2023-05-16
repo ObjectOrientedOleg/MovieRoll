@@ -129,6 +129,7 @@ private fun NetworkMovie.asMovieEntity(
         adult = adult,
         backdropPath = backdropPath,
         genreIds = genreIds,
+        id = buildEntityId(movieType),
         movieId = id,
         movieType = movieType.name,
         originalLanguage = originalLanguage,
@@ -144,3 +145,5 @@ private fun NetworkMovie.asMovieEntity(
         voteAverage = voteAverage,
         voteCount = voteCount
     )
+
+private fun NetworkMovie.buildEntityId(movieType: MovieType) = "${id}_${movieType.name}"

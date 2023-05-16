@@ -25,6 +25,9 @@ data class MovieEntity(
     val backdropPath: String?,
     @ColumnInfo(name = "genre_ids")
     val genreIds: List<Int>,
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    val id: String,
     @ColumnInfo(name = "movie_id")
     val movieId: Int,
     @ColumnInfo(name = "movie_type")
@@ -54,7 +57,5 @@ data class MovieEntity(
     @ColumnInfo(name = "vote_count")
     val voteCount: Int,
     @ColumnInfo(name = "creation_date")
-    val creationDate: Instant = Clock.System.now(),
-    @PrimaryKey(autoGenerate = true)
-    val databaseId: Int = 0
+    val creationDate: Instant = Clock.System.now()
 )
