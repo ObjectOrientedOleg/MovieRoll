@@ -2,8 +2,40 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ce33057cfb7218f27bcb925875fca35f",
+    "identityHash": "52e983fe86cc6c181b08181b44f2bcba",
     "entities": [
+      {
+        "tableName": "genre_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `creation_date` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "creationDate",
+            "columnName": "creation_date",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
       {
         "tableName": "image_configuration_table",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`base_url` TEXT NOT NULL, `backdrop_sizes` TEXT NOT NULL, `logo_sizes` TEXT NOT NULL, `poster_sizes` TEXT NOT NULL, `profile_sizes` TEXT NOT NULL, `still_sizes` TEXT NOT NULL, `creation_date` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
@@ -424,7 +456,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ce33057cfb7218f27bcb925875fca35f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '52e983fe86cc6c181b08181b44f2bcba')"
     ]
   }
 }
