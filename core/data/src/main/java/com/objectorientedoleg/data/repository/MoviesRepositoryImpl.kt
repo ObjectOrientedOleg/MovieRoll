@@ -5,12 +5,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.objectorientedoleg.common.dispatchers.Dispatcher
 import com.objectorientedoleg.common.dispatchers.MovieRollDispatchers.*
 import com.objectorientedoleg.data.model.Movie
 import com.objectorientedoleg.data.model.asModel
 import com.objectorientedoleg.data.paging.LocalMoviesDataSource
-import com.objectorientedoleg.data.paging.MoviesFirstPageIndex
 import com.objectorientedoleg.data.paging.MoviesPageSize
 import com.objectorientedoleg.data.paging.MoviesRemoteMediator
 import com.objectorientedoleg.data.paging.RemoteMoviesDataSource
@@ -22,12 +20,8 @@ import com.objectorientedoleg.database.proxy.MovieRollDatabaseProxy
 import com.objectorientedoleg.network.MovieRollNetworkDataSource
 import com.objectorientedoleg.network.model.NetworkMovie
 import com.objectorientedoleg.network.model.NetworkMovies
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 import java.util.UUID
 import javax.inject.Inject
@@ -36,8 +30,7 @@ import javax.inject.Inject
 internal class MoviesRepositoryImpl @Inject constructor(
     private val database: MovieRollDatabaseProxy,
     private val networkDataSource: MovieRollNetworkDataSource,
-    private val synchronizer: Synchronizer,
-    @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher
+    private val synchronizer: Synchronizer
 ) : MoviesRepository {
 
     override fun getMovies(movieQuery: MovieQuery): Flow<PagingData<Movie>> {
@@ -51,29 +44,6 @@ internal class MoviesRepositoryImpl @Inject constructor(
             pagingSourceFactory = { database.movieDao.getMoviesByType(movieQuery.name) }
         )
         return pager.flow.map(PagingData<MovieEntity>::asModels)
-    }
-
-    override suspend fun sync(synchronizer: Synchronizer): Boolean = withContext(ioDispatcher) {
-        val deferredSyncs = MovieType.values().map { movieType ->
-            async {
-                val movieQuery = MovieQuery.ByType(movieType)
-                val localSource = localMoviesDataSourceFor(movieQuery)
-                if (synchronizer.isDataValid(localSource.lastUpdated())) {
-                    return@async true
-                }
-                val remoteSource = remoteMoviesDataSourceFor(movieQuery)
-                val result = remoteSource.loadMovies(MoviesFirstPageIndex)
-                if (result.isFailure) {
-                    return@async false
-                }
-                val networkMovies = result.getOrThrow()
-                localSource.onLoadComplete(networkMovies, true)
-                // Update was successful.
-                true
-            }
-        }
-        deferredSyncs.awaitAll()
-            .all { syncedSuccessfully -> syncedSuccessfully }
     }
 
     private fun localMoviesDataSourceFor(movieQuery: MovieQuery) =
