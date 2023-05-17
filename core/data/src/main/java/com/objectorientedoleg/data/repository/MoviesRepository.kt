@@ -8,5 +8,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface MoviesRepository : Syncable {
 
-    fun getMovies(movieType: MovieType): Flow<PagingData<Movie>>
+    fun getMovies(movieQuery: MovieQuery): Flow<PagingData<Movie>>
+}
+
+sealed interface MovieQuery {
+    val name: String
+
+    data class ByType(val type: MovieType, override val name: String = type.name) : MovieQuery
+
+    data class ByGenreId(val id: Int, override val name: String) : MovieQuery
 }

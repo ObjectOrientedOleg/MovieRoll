@@ -4,6 +4,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import com.objectorientedoleg.data.sync.Synchronizer
 import com.objectorientedoleg.database.model.MovieEntity
 import com.objectorientedoleg.database.model.MoviePageEntity
 import com.objectorientedoleg.network.model.NetworkMovies
@@ -13,12 +14,19 @@ internal const val MoviesFirstPageIndex = 1
 internal const val MoviesLastPageIndex = 500
 
 @OptIn(ExperimentalPagingApi::class)
-class MoviesRemoteMediator(
+internal class MoviesRemoteMediator(
     private val localMoviesDataSource: LocalMoviesDataSource,
-    private val remoteMoviesDataSource: RemoteMoviesDataSource
+    private val remoteMoviesDataSource: RemoteMoviesDataSource,
+    private val synchronizer: Synchronizer
 ) : RemoteMediator<Int, MovieEntity>() {
 
-    override suspend fun initialize(): InitializeAction = InitializeAction.SKIP_INITIAL_REFRESH
+    override suspend fun initialize(): InitializeAction {
+        return if (synchronizer.isDataValid(localMoviesDataSource.lastUpdated())) {
+            InitializeAction.SKIP_INITIAL_REFRESH
+        } else {
+            InitializeAction.LAUNCH_INITIAL_REFRESH
+        }
+    }
 
     override suspend fun load(
         loadType: LoadType,
@@ -66,21 +74,21 @@ class MoviesRemoteMediator(
 
     private suspend fun getPageClosestToCurrentPosition(state: PagingState<Int, MovieEntity>): MoviePageEntity? {
         return state.anchorPosition?.let { position ->
-            state.closestItemToPosition(position)?.let { popularMovie ->
-                localMoviesDataSource.getPage(popularMovie.pageId)
+            state.closestItemToPosition(position)?.let { movieEntity ->
+                localMoviesDataSource.getPage(movieEntity.pageId)
             }
         }
     }
 
     private suspend fun getPageForFirstItem(state: PagingState<Int, MovieEntity>): MoviePageEntity? {
-        return state.firstItemOrNull()?.let { popularMovie ->
-            localMoviesDataSource.getPage(popularMovie.pageId)
+        return state.firstItemOrNull()?.let { movieEntity ->
+            localMoviesDataSource.getPage(movieEntity.pageId)
         }
     }
 
     private suspend fun getPageForLastItem(state: PagingState<Int, MovieEntity>): MoviePageEntity? {
-        return state.lastItemOrNull()?.let { popularMovie ->
-            localMoviesDataSource.getPage(popularMovie.pageId)
+        return state.lastItemOrNull()?.let { movieEntity ->
+            localMoviesDataSource.getPage(movieEntity.pageId)
         }
     }
 }

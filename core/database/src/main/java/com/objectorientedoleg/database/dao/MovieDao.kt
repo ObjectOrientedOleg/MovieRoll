@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.objectorientedoleg.database.model.MovieEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
@@ -15,8 +14,5 @@ interface MovieDao {
     suspend fun insertAll(movieEntities: List<MovieEntity>)
 
     @Query("SELECT * FROM movie_table WHERE movie_type = :movieType ORDER BY page ASC, popularity DESC")
-    fun getMovies(movieType: String): PagingSource<Int, MovieEntity>
-
-    @Query("SELECT * FROM movie_table WHERE movie_type = :movieType ORDER BY page ASC, popularity DESC")
-    fun getMoviesByType(movieType: String): Flow<List<MovieEntity>>
+    fun getMoviesByType(movieType: String): PagingSource<Int, MovieEntity>
 }

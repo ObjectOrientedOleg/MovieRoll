@@ -36,17 +36,19 @@ import javax.inject.Inject
 internal class MoviesRepositoryImpl @Inject constructor(
     private val database: MovieRollDatabaseProxy,
     private val networkDataSource: MovieRollNetworkDataSource,
+    private val synchronizer: Synchronizer,
     @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher
 ) : MoviesRepository {
 
-    override fun getMovies(movieType: MovieType): Flow<PagingData<Movie>> {
+    override fun getMovies(movieQuery: MovieQuery): Flow<PagingData<Movie>> {
         val pager = Pager(
             config = PagingConfig(MoviesPageSize),
             remoteMediator = MoviesRemoteMediator(
-                localMoviesDataSource = localMoviesDataSourceFor(movieType),
-                remoteMoviesDataSource = remoteMoviesDataSourceFor(movieType)
+                localMoviesDataSource = localMoviesDataSourceFor(movieQuery),
+                remoteMoviesDataSource = remoteMoviesDataSourceFor(movieQuery),
+                synchronizer = synchronizer,
             ),
-            pagingSourceFactory = { database.movieDao.getMovies(movieType.name) }
+            pagingSourceFactory = { database.movieDao.getMoviesByType(movieQuery.name) }
         )
         return pager.flow.map(PagingData<MovieEntity>::asModels)
     }
@@ -54,11 +56,12 @@ internal class MoviesRepositoryImpl @Inject constructor(
     override suspend fun sync(synchronizer: Synchronizer): Boolean = withContext(ioDispatcher) {
         val deferredSyncs = MovieType.values().map { movieType ->
             async {
-                val localSource = localMoviesDataSourceFor(movieType)
+                val movieQuery = MovieQuery.ByType(movieType)
+                val localSource = localMoviesDataSourceFor(movieQuery)
                 if (synchronizer.isDataValid(localSource.lastUpdated())) {
                     return@async true
                 }
-                val remoteSource = remoteMoviesDataSourceFor(movieType)
+                val remoteSource = remoteMoviesDataSourceFor(movieQuery)
                 val result = remoteSource.loadMovies(MoviesFirstPageIndex)
                 if (result.isFailure) {
                     return@async false
@@ -73,21 +76,21 @@ internal class MoviesRepositoryImpl @Inject constructor(
             .all { syncedSuccessfully -> syncedSuccessfully }
     }
 
-    private fun localMoviesDataSourceFor(movieType: MovieType) =
+    private fun localMoviesDataSourceFor(movieQuery: MovieQuery) =
         object : LocalMoviesDataSource {
             override suspend fun lastUpdated(): Instant? =
-                database.moviePageDao.lastUpdated(movieType.name)
+                database.moviePageDao.lastUpdated(movieQuery.name)
 
             override suspend fun onLoadComplete(networkMovies: NetworkMovies, isRefresh: Boolean) {
                 database.asTransaction {
                     if (isRefresh) {
                         // The delete action is cascaded to all associated movies.
-                        database.moviePageDao.deleteAll(movieType.name)
+                        database.moviePageDao.deleteAll(movieQuery.name)
                     }
 
                     val pageId = UUID.randomUUID().toString()
-                    database.moviePageDao.insert(networkMovies.asMoviePageEntity(pageId, movieType))
-                    database.movieDao.insertAll(networkMovies.asMovieEntities(pageId, movieType))
+                    database.moviePageDao.insert(networkMovies.asPageEntity(pageId, movieQuery))
+                    database.movieDao.insertAll(networkMovies.asMovieEntities(pageId, movieQuery))
                 }
             }
 
@@ -95,43 +98,47 @@ internal class MoviesRepositoryImpl @Inject constructor(
                 database.moviePageDao.getPage(pageId)
         }
 
-    private fun remoteMoviesDataSourceFor(movieType: MovieType) =
+    private fun remoteMoviesDataSourceFor(movieQuery: MovieQuery) =
         object : RemoteMoviesDataSource {
-            override suspend fun loadMovies(page: Int): Result<NetworkMovies> = when (movieType) {
-                MovieType.NowPlaying -> networkDataSource.getNowPlayingMovies(page)
-                MovieType.Popular -> networkDataSource.getPopularMovies(page)
-                MovieType.TopRated -> networkDataSource.getTopRatedMovies(page)
-                MovieType.UpComing -> networkDataSource.getUpcomingMovies(page)
+            override suspend fun loadMovies(page: Int): Result<NetworkMovies> = when (movieQuery) {
+                is MovieQuery.ByType -> when (movieQuery.type) {
+                    MovieType.NowPlaying -> networkDataSource.getNowPlayingMovies(page)
+                    MovieType.Popular -> networkDataSource.getPopularMovies(page)
+                    MovieType.TopRated -> networkDataSource.getTopRatedMovies(page)
+                    MovieType.UpComing -> networkDataSource.getUpcomingMovies(page)
+                }
+
+                is MovieQuery.ByGenreId -> networkDataSource.getMoviesByGenre(movieQuery.id, page)
             }
         }
 }
 
 private fun PagingData<MovieEntity>.asModels() = map { it.asModel() }
 
-private fun NetworkMovies.asMoviePageEntity(id: String, movieType: MovieType) =
+private fun NetworkMovies.asPageEntity(id: String, movieQuery: MovieQuery) =
     MoviePageEntity(
         id = id,
-        movieType = movieType.name,
+        movieType = movieQuery.name,
         page = page,
         totalResults = totalResults,
         totalPages = totalPages
     )
 
-private fun NetworkMovies.asMovieEntities(pageId: String, movieType: MovieType) =
-    movies.map { it.asMovieEntity(page, pageId, movieType) }
+private fun NetworkMovies.asMovieEntities(pageId: String, movieQuery: MovieQuery) =
+    movies.map { it.asMovieEntity(page, pageId, movieQuery) }
 
 private fun NetworkMovie.asMovieEntity(
     page: Int,
     pageId: String,
-    movieType: MovieType
+    movieQuery: MovieQuery
 ) =
     MovieEntity(
         adult = adult,
         backdropPath = backdropPath,
         genreIds = genreIds,
-        id = buildEntityId(movieType),
+        id = buildEntityId(movieQuery),
         movieId = id,
-        movieType = movieType.name,
+        movieType = movieQuery.name,
         originalLanguage = originalLanguage,
         originalTitle = originalTitle,
         overview = overview,
@@ -146,4 +153,4 @@ private fun NetworkMovie.asMovieEntity(
         voteCount = voteCount
     )
 
-private fun NetworkMovie.buildEntityId(movieType: MovieType) = "${id}_${movieType.name}"
+private fun NetworkMovie.buildEntityId(movieQuery: MovieQuery) = "${id}_${movieQuery.name}"
