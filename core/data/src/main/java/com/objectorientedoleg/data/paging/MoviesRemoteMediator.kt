@@ -9,7 +9,7 @@ import com.objectorientedoleg.database.model.MovieEntity
 import com.objectorientedoleg.database.model.MoviePageEntity
 import com.objectorientedoleg.network.model.NetworkMovies
 
-internal const val MoviesPageSize = 60
+internal const val MoviesPageSize = 40
 internal const val MoviesFirstPageIndex = 1
 internal const val MoviesLastPageIndex = 500
 
