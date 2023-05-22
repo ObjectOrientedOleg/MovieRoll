@@ -3,7 +3,7 @@ package com.objectorientedoleg.data.repository
 import androidx.annotation.GuardedBy
 import com.objectorientedoleg.common.scope.MovieRollScope.*
 import com.objectorientedoleg.common.scope.Scope
-import com.objectorientedoleg.data.model.ImageUrlParams
+import com.objectorientedoleg.data.model.Image
 import com.objectorientedoleg.data.model.asModel
 import com.objectorientedoleg.data.sync.Synchronizer
 import com.objectorientedoleg.data.util.ImageUrlAssembler
@@ -17,11 +17,11 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
-internal class ImageUrlRepositoryImpl @Inject constructor(
+internal class ImageRepositoryImpl @Inject constructor(
     private val imageConfigurationDao: ImageConfigurationDao,
     private val networkDataSource: MovieRollNetworkDataSource,
     @Scope(IO) scope: CoroutineScope
-) : ImageUrlRepository {
+) : ImageRepository {
 
     private val mutex = Mutex()
 
@@ -40,8 +40,9 @@ internal class ImageUrlRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun urlFromParams(imageUrlParams: ImageUrlParams): String? =
-        urlAssembler()?.urlFromParams(imageUrlParams)
+    override suspend fun getImage(params: ImageParams): Image? = urlAssembler()?.let {
+        Image { size -> it.assemble(params, size) }
+    }
 
     private suspend fun urlAssembler() = mutex.withLock { urlAssembler }
 

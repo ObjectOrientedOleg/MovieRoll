@@ -2,8 +2,8 @@ package com.objectorientedoleg.data.di
 
 import com.objectorientedoleg.data.repository.GenreRepository
 import com.objectorientedoleg.data.repository.GenreRepositoryImpl
-import com.objectorientedoleg.data.repository.ImageUrlRepository
-import com.objectorientedoleg.data.repository.ImageUrlRepositoryImpl
+import com.objectorientedoleg.data.repository.ImageRepository
+import com.objectorientedoleg.data.repository.ImageRepositoryImpl
 import com.objectorientedoleg.data.repository.MoviesRepository
 import com.objectorientedoleg.data.repository.MoviesRepositoryImpl
 import com.objectorientedoleg.data.sync.SyncManager
@@ -28,9 +28,9 @@ internal interface InternalDataModule {
 
     @Binds
     @Singleton
-    fun bindsImageUrlRepository(
-        impl: ImageUrlRepositoryImpl
-    ): ImageUrlRepository
+    fun bindsImageRepository(
+        impl: ImageRepositoryImpl
+    ): ImageRepository
 
     @Binds
     @Singleton

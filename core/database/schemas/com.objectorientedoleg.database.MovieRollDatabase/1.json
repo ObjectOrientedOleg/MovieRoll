@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "52e983fe86cc6c181b08181b44f2bcba",
+    "identityHash": "c1df0754f164e027989476b30d882960",
     "entities": [
       {
         "tableName": "genre_table",
@@ -264,7 +264,7 @@
       },
       {
         "tableName": "movie_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`adult` INTEGER NOT NULL, `backdrop_path` TEXT, `genre_ids` TEXT NOT NULL, `movie_id` INTEGER NOT NULL, `movie_type` TEXT NOT NULL, `original_language` TEXT NOT NULL, `original_title` TEXT NOT NULL, `overview` TEXT NOT NULL, `page` INTEGER NOT NULL, `page_id` TEXT NOT NULL, `popularity` REAL NOT NULL, `poster_path` TEXT, `release_date` TEXT NOT NULL, `title` TEXT NOT NULL, `video` INTEGER NOT NULL, `vote_average` REAL NOT NULL, `vote_count` INTEGER NOT NULL, `creation_date` INTEGER NOT NULL, `databaseId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`page_id`) REFERENCES `movie_page_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`adult` INTEGER NOT NULL, `backdrop_path` TEXT, `genre_ids` TEXT NOT NULL, `id` TEXT NOT NULL, `movie_id` INTEGER NOT NULL, `movie_type` TEXT NOT NULL, `original_language` TEXT NOT NULL, `original_title` TEXT NOT NULL, `overview` TEXT NOT NULL, `page` INTEGER NOT NULL, `page_id` TEXT NOT NULL, `popularity` REAL NOT NULL, `poster_path` TEXT, `release_date` TEXT NOT NULL, `title` TEXT NOT NULL, `video` INTEGER NOT NULL, `vote_average` REAL NOT NULL, `vote_count` INTEGER NOT NULL, `creation_date` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`page_id`) REFERENCES `movie_page_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "adult",
@@ -281,6 +281,12 @@
           {
             "fieldPath": "genreIds",
             "columnName": "genre_ids",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -373,18 +379,12 @@
             "columnName": "creation_date",
             "affinity": "INTEGER",
             "notNull": true
-          },
-          {
-            "fieldPath": "databaseId",
-            "columnName": "databaseId",
-            "affinity": "INTEGER",
-            "notNull": true
           }
         ],
         "primaryKey": {
-          "autoGenerate": true,
+          "autoGenerate": false,
           "columnNames": [
-            "databaseId"
+            "id"
           ]
         },
         "indices": [],
@@ -456,7 +456,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '52e983fe86cc6c181b08181b44f2bcba')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c1df0754f164e027989476b30d882960')"
     ]
   }
 }

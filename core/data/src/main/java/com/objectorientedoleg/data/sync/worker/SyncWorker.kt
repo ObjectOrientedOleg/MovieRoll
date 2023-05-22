@@ -19,7 +19,7 @@ import com.objectorientedoleg.common.dispatchers.Dispatcher
 import com.objectorientedoleg.common.dispatchers.MovieRollDispatchers.*
 import com.objectorientedoleg.data.R
 import com.objectorientedoleg.data.repository.GenreRepository
-import com.objectorientedoleg.data.repository.ImageUrlRepository
+import com.objectorientedoleg.data.repository.ImageRepository
 import com.objectorientedoleg.data.sync.Synchronizer
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -34,7 +34,7 @@ class SyncWorker @AssistedInject constructor(
     @Assisted workerParameters: WorkerParameters,
     private val synchronizer: Synchronizer,
     private val genreRepository: GenreRepository,
-    private val imageUrlRepository: ImageUrlRepository,
+    private val imageRepository: ImageRepository,
     @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher
 ) : CoroutineWorker(context, workerParameters) {
 
@@ -44,7 +44,7 @@ class SyncWorker @AssistedInject constructor(
     override suspend fun doWork(): Result = withContext(ioDispatcher) {
         val syncedSuccessfully = awaitAll(
             async { genreRepository.sync(synchronizer) },
-            async { imageUrlRepository.sync(synchronizer) }
+            async { imageRepository.sync(synchronizer) }
         ).all { it }
         if (syncedSuccessfully) {
             Result.success()

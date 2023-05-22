@@ -1,6 +1,5 @@
 package com.objectorientedoleg.data.repository
 
-import com.objectorientedoleg.data.model.ImageUrlParams
 import com.objectorientedoleg.data.type.ImageType
 import com.objectorientedoleg.database.dao.ImageConfigurationDao
 import com.objectorientedoleg.database.model.ImageConfigurationEntity
@@ -27,7 +26,7 @@ private val BackdropSizes =
     )
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class ImageUrlRepositoryImplTest {
+class ImageRepositoryImplTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
@@ -39,8 +38,8 @@ class ImageUrlRepositoryImplTest {
         mockImageConfigurationUnavailable()
         val subject = createTestSubject()
 
-        val url = subject.urlFromParams(ImageUrlParams(BackdropPath, 300, ImageType.Backdrop))
-        assertTrue(url == null)
+        val image = subject.getImage(ImageParams(BackdropPath, ImageType.Backdrop))
+        assertNull(image)
     }
 
     @Test
@@ -49,12 +48,13 @@ class ImageUrlRepositoryImplTest {
         val subject = createTestSubject()
         testScheduler.advanceUntilIdle()
 
-        val url = subject.urlFromParams(ImageUrlParams(BackdropPath, 300, ImageType.Backdrop))
-        assertTrue(url == "https://image.tmdb.org/t/p/w300/qTkJ6kbTeSjqfHCFCmWnfWZJOtm.jpg")
+        val image = subject.getImage(ImageParams(BackdropPath, ImageType.Backdrop))
+            ?: throw AssertionError()
+        assertTrue(image.url(300) == "https://image.tmdb.org/t/p/w300/qTkJ6kbTeSjqfHCFCmWnfWZJOtm.jpg")
     }
 
     private fun createTestSubject() =
-        ImageUrlRepositoryImpl(
+        ImageRepositoryImpl(
             imageConfigurationDaoMock,
             networkDataSourceMock,
             TestScope(testDispatcher)

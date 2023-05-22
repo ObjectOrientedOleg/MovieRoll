@@ -1,7 +1,7 @@
 package com.objectorientedoleg.data.util
 
 import com.objectorientedoleg.data.model.ImageConfiguration
-import com.objectorientedoleg.data.model.ImageUrlParams
+import com.objectorientedoleg.data.repository.ImageParams
 import com.objectorientedoleg.data.type.ImageType
 import java.util.NavigableMap
 import java.util.TreeMap
@@ -12,23 +12,21 @@ internal class ImageUrlAssembler(private val configuration: ImageConfiguration) 
     private val posterSizes by lazy { configuration.posterSizes.toSizeMap() }
     private val profileSizes by lazy { configuration.profileSizes.toSizeMap() }
 
-    fun urlFromParams(imageUrlParams: ImageUrlParams): String? {
-        val sizeEntry: Map.Entry<Int, String>? = when (imageUrlParams.type) {
-            ImageType.Backdrop -> backdropSizes.floorEntry(imageUrlParams.size)
-            ImageType.Poster -> posterSizes.floorEntry(imageUrlParams.size)
-            ImageType.Profile -> profileSizes.floorEntry(imageUrlParams.size)
+    fun assemble(params: ImageParams, size: Int): String? {
+        val sizeEntry: Map.Entry<Int, String>? = when (params.type) {
+            ImageType.Backdrop -> backdropSizes.floorEntry(size)
+            ImageType.Poster -> posterSizes.floorEntry(size)
+            ImageType.Profile -> profileSizes.floorEntry(size)
         }
         return if (sizeEntry != null) {
-            buildUrl(sizeEntry.value, imageUrlParams.path)
+            buildUrl(sizeEntry.value, params.path)
         } else {
-            val sizeString = when (imageUrlParams.type) {
+            val sizeString = when (params.type) {
                 ImageType.Backdrop -> configuration.backdropSizes.lastOrNull()
                 ImageType.Poster -> configuration.posterSizes.lastOrNull()
                 ImageType.Profile -> configuration.profileSizes.lastOrNull()
             }
-            sizeString?.let { size ->
-                buildUrl(size, imageUrlParams.path)
-            }
+            sizeString?.let { buildUrl(it, params.path) }
         }
     }
 
@@ -39,7 +37,6 @@ internal class ImageUrlAssembler(private val configuration: ImageConfiguration) 
             append(path)
         }
     }
-
 }
 
 private fun List<String>.toSizeMap(): NavigableMap<Int, String> {

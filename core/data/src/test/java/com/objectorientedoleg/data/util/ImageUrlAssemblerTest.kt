@@ -1,7 +1,7 @@
 package com.objectorientedoleg.data.util
 
 import com.objectorientedoleg.data.model.ImageConfiguration
-import com.objectorientedoleg.data.model.ImageUrlParams
+import com.objectorientedoleg.data.repository.ImageParams
 import com.objectorientedoleg.data.type.ImageType
 import io.mockk.every
 import io.mockk.mockk
@@ -55,43 +55,43 @@ class ImageUrlAssemblerTest {
 
     @Test
     fun urlFromParams_validSize_w500PosterUrlReturned() {
-        val params = ImageUrlParams(PosterPath, 500, ImageType.Poster)
-        val url = subject.urlFromParams(params)
+        val params = ImageParams(PosterPath, ImageType.Poster)
+        val url = subject.assemble(params, 500)
         assertTrue(url == "https://image.tmdb.org/t/p/w500/pIkRyD18kl4FhoCNQuWxWu5cBLM.jpg")
     }
 
     @Test
     fun urlFromParams_validSize_w185ProfileUrlReturned() {
-        val params = ImageUrlParams(ProfilePath, 185, ImageType.Profile)
-        val url = subject.urlFromParams(params)
+        val params = ImageParams(ProfilePath, ImageType.Profile)
+        val url = subject.assemble(params, 185)
         assertTrue(url == "https://image.tmdb.org/t/p/w185/tL0bxnvJNvCWbysjQuh6lcboJGx.jpg")
     }
 
     @Test
     fun urlFromParams_validSize_w300BackdropUrlReturned() {
-        val params = ImageUrlParams(BackdropPath, 300, ImageType.Backdrop)
-        val url = subject.urlFromParams(params)
+        val params = ImageParams(BackdropPath, ImageType.Backdrop)
+        val url = subject.assemble(params, 300)
         assertTrue(url == "https://image.tmdb.org/t/p/w300/qTkJ6kbTeSjqfHCFCmWnfWZJOtm.jpg")
     }
 
     @Test
     fun urlFromParams_invalidSize_originalPosterUrlReturned() {
-        val params = ImageUrlParams(PosterPath, -1, ImageType.Poster)
-        val url = subject.urlFromParams(params)
+        val params = ImageParams(PosterPath, ImageType.Poster)
+        val url = subject.assemble(params, -1)
         assertTrue(url == "https://image.tmdb.org/t/p/original/pIkRyD18kl4FhoCNQuWxWu5cBLM.jpg")
     }
 
     @Test
     fun urlFromParams_invalidSize_originalProfileUrlReturned() {
-        val params = ImageUrlParams(ProfilePath, -1, ImageType.Profile)
-        val url = subject.urlFromParams(params)
+        val params = ImageParams(ProfilePath, ImageType.Profile)
+        val url = subject.assemble(params, -1)
         assertTrue(url == "https://image.tmdb.org/t/p/original/tL0bxnvJNvCWbysjQuh6lcboJGx.jpg")
     }
 
     @Test
     fun urlFromParams_invalidSize_originalBackdropUrlReturned() {
-        val params = ImageUrlParams(BackdropPath, -1, ImageType.Backdrop)
-        val url = subject.urlFromParams(params)
+        val params = ImageParams(BackdropPath, ImageType.Backdrop)
+        val url = subject.assemble(params, -1)
         assertTrue(url == "https://image.tmdb.org/t/p/original/qTkJ6kbTeSjqfHCFCmWnfWZJOtm.jpg")
     }
 
@@ -100,8 +100,8 @@ class ImageUrlAssemblerTest {
         every { configurationMock.posterSizes } returns emptyList()
         subject = ImageUrlAssembler(configurationMock)
 
-        val params = ImageUrlParams(PosterPath, 500, ImageType.Poster)
-        val url = subject.urlFromParams(params)
+        val params = ImageParams(PosterPath, ImageType.Poster)
+        val url = subject.assemble(params, 500)
         assertTrue(url == null)
     }
 
@@ -110,8 +110,8 @@ class ImageUrlAssemblerTest {
         every { configurationMock.profileSizes } returns emptyList()
         subject = ImageUrlAssembler(configurationMock)
 
-        val params = ImageUrlParams(ProfilePath, 500, ImageType.Profile)
-        val url = subject.urlFromParams(params)
+        val params = ImageParams(ProfilePath, ImageType.Profile)
+        val url = subject.assemble(params, 500)
         assertTrue(url == null)
     }
 
@@ -120,8 +120,8 @@ class ImageUrlAssemblerTest {
         every { configurationMock.backdropSizes } returns emptyList()
         subject = ImageUrlAssembler(configurationMock)
 
-        val params = ImageUrlParams(BackdropPath, 300, ImageType.Backdrop)
-        val url = subject.urlFromParams(params)
+        val params = ImageParams(BackdropPath, ImageType.Backdrop)
+        val url = subject.assemble(params, 300)
         assertTrue(url == null)
     }
 
