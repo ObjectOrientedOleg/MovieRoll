@@ -51,6 +51,7 @@ dependencies {
     api(libs.androidx.compose.material3)
     api(libs.androidx.compose.ui.tooling.preview)
     api(libs.androidx.compose.ui.ui)
+    api(libs.androidx.constraint.layout.compose)
     api(libs.coil)
     api(libs.coil.compose)
 

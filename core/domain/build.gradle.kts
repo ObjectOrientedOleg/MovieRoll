@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.paging.runtime)
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.datetime)
 
     kapt(libs.hilt.compiler)
 

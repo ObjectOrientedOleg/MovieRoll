@@ -55,15 +55,20 @@ private fun GenreRepository.getDiscoverGenres(
         )
     }
     discoverGenres.apply {
-        val discoverMovies = MovieType.values().map { movieType ->
-            getDiscoverMovies(movieType.toMovieQuery())
+        sortBy { discoverGenre -> discoverGenre.name }
+        val singleGenres = MovieType.values().map { movieType ->
+            DiscoverGenre.SingleGenre(
+                id = movieType.ordinal,
+                name = movieType.displayName(),
+                movies = getDiscoverMovies(movieType.toMovieQuery())
+            )
         }
         add(
             0,
             DiscoverGenre.CombinedGenres(
                 id = -1,
                 name = "Recommended",
-                movies = discoverMovies
+                genres = singleGenres
             )
         )
     }
@@ -74,3 +79,10 @@ private fun GenreRepository.getDiscoverGenres(
 private fun Genre.toMovieQuery() = MovieQuery.ByGenreId(id = id, name = name)
 
 private fun MovieType.toMovieQuery() = MovieQuery.ByType(this)
+
+private fun MovieType.displayName() = when (this) {
+    MovieType.NowPlaying -> "Now playing"
+    MovieType.Popular -> "Popular"
+    MovieType.TopRated -> "Top rated"
+    MovieType.UpComing -> "Upcoming"
+}

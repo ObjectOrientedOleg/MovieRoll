@@ -2,10 +2,8 @@ package com.objectorientedoleg.ui.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.FilledTonalButton
@@ -27,7 +25,6 @@ import kotlinx.coroutines.launch
 fun TabLayout(
     tabCount: Int,
     tabTitle: (index: Int) -> String,
-    onTabClick: (index: Int) -> Unit,
     modifier: Modifier = Modifier,
     edgePadding: Dp = ThemeDefaults.screenEdgePadding,
     tabKey: ((index: Int) -> Any)? = null,
@@ -48,20 +45,16 @@ fun TabLayout(
                 TabItem(
                     title = tabTitle(index),
                     selected = index == pagerState.currentPage,
-                    onClick = {
-                        onTabClick(index)
-                        scope.launch { pagerState.animateScrollToPage(index) }
-                    }
+                    onClick = { scope.launch { pagerState.animateScrollToPage(index) } }
                 )
             }
         }
-        Spacer(modifier = Modifier.height(edgePadding))
         HorizontalPager(
             modifier = Modifier.fillMaxSize(),
             pageCount = tabCount,
             state = pagerState,
-            userScrollEnabled = false,
-            key = tabKey?.let { { index -> it(index) } }
+            key = tabKey,
+            userScrollEnabled = false
         ) { index ->
             tabContent(index)
         }
@@ -98,7 +91,6 @@ fun PreviewTabLayout(@PreviewParameter(TabsPreviewParameterProvider::class) tabs
     TabLayout(
         tabCount = tabs.size,
         tabTitle = { index -> tabs[index] },
-        onTabClick = {},
         tabContent = {}
     )
 }

@@ -9,6 +9,7 @@ import com.objectorientedoleg.data.type.ImageType
 import com.objectorientedoleg.domain.model.DiscoverMovie
 import com.objectorientedoleg.domain.model.DiscoverMovies
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.toLocalDate
 import javax.inject.Inject
 
 class GetDiscoverMoviesUseCase @Inject constructor(
@@ -22,9 +23,14 @@ class GetDiscoverMoviesUseCase @Inject constructor(
                 val image = movie.posterPath?.let { path ->
                     imageRepository.getImage(ImageParams(path, ImageType.Poster))
                 }
+                val releaseYear = movie.releaseDate.let { date ->
+                    val localDate = date.toLocalDate()
+                    localDate.year
+                }
                 DiscoverMovie(
                     id = movie.id,
                     posterUrl = image?.url,
+                    releaseYear = releaseYear,
                     title = movie.title,
                     voteAverage = movie.voteAverage
                 )

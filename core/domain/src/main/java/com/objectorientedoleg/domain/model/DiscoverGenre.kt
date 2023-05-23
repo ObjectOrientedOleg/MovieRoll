@@ -13,6 +13,6 @@ sealed interface DiscoverGenre {
     data class CombinedGenres(
         override val id: Int,
         override val name: String,
-        val movies: List<DiscoverMovies>
+        val genres: List<SingleGenre>
     ) : DiscoverGenre
 }

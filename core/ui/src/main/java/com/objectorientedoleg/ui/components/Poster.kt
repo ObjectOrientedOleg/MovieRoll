@@ -1,115 +1,104 @@
 package com.objectorientedoleg.ui.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CornerBasedShape
-import androidx.compose.foundation.shape.ZeroCornerSize
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.material3.Card
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.DefaultShadowColor
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.placeholder
+import com.google.accompanist.placeholder.shimmer
+import com.objectorientedoleg.domain.model.ImageUrl
 
 private const val PosterAspectRatio = 2f / 3
-private val MaterialThemeElevationLevel2 = 3.dp
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PosterWithDetail(
-    modifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.surfaceVariant,
-    posterOnLeft: Boolean = true,
-    poster: @Composable () -> Unit,
-    detail: @Composable () -> Unit
+fun MediumPoster(
+    posterUrl: ImageUrl?,
+    contentDescription: String?,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    BoxWithConstraints(modifier = modifier) {
-        val detailWidth = maxWidth - (maxHeight * PosterAspectRatio)
-        val detailHeight = maxHeight - (MaterialTheme.shapes.medium.cornerSize() * 2)
-        Row(
+    ElevatedCard(
+        modifier = modifier.aspectRatio(PosterAspectRatio),
+        onClick = onClick,
+        shape = MaterialTheme.shapes.medium
+    ) {
+        SizedAsyncImage(
             modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            if (posterOnLeft) {
-                PosterWithShadow(
-                    modifier = Modifier.fillMaxHeight(),
-                    shadowColor = containerColor,
-                    content = poster
-                )
-                Box(
-                    modifier = Modifier
-                        .width(detailWidth)
-                        .height(detailHeight)
-                        .background(
-                            color = containerColor,
-                            shape = MaterialTheme.shapes.medium.copy(
-                                topStart = ZeroCornerSize,
-                                bottomStart = ZeroCornerSize
-                            )
-                        )
-                ) {
-                    detail()
-                }
-            } else {
-                Box(
-                    modifier = Modifier
-                        .width(detailWidth)
-                        .height(detailHeight)
-                        .background(
-                            color = containerColor,
-                            shape = MaterialTheme.shapes.medium.copy(
-                                topEnd = ZeroCornerSize,
-                                bottomEnd = ZeroCornerSize
-                            )
-                        )
-                ) {
-                    detail()
-                }
-                PosterWithShadow(
-                    modifier = Modifier.fillMaxHeight(),
-                    shadowColor = containerColor,
-                    content = poster
-                )
-            }
-        }
+            imageUrl = posterUrl,
+            contentDescription = contentDescription
+        )
     }
 }
 
 @Composable
-private fun CornerBasedShape.cornerSize() = with(LocalDensity.current) {
-    topStart.toPx(Size.Unspecified, this).toDp()
+fun MediumShimmerPoster(modifier: Modifier = Modifier) {
+    ShimmerPoster(
+        modifier = modifier,
+        shape = MaterialTheme.shapes.medium
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ExtraLargePoster(
+    posterUrl: ImageUrl?,
+    contentDescription: String?,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    sharpCorner: Boolean = false
+) {
+    ElevatedCard(
+        modifier = modifier.aspectRatio(PosterAspectRatio),
+        onClick = onClick,
+        shape = MaterialTheme.shapes.extraLarge.copy(
+            topStart = if (sharpCorner) {
+                CornerSize(8.dp)
+            } else {
+                MaterialTheme.shapes.extraLarge.topStart
+            }
+        )
+    ) {
+        SizedAsyncImage(
+            modifier = Modifier.fillMaxSize(),
+            imageUrl = posterUrl,
+            contentDescription = contentDescription
+        )
+    }
 }
 
 @Composable
-fun PosterWithShadow(
-    modifier: Modifier = Modifier,
-    shadowColor: Color = DefaultShadowColor,
-    content: @Composable () -> Unit
-) {
-    Box(
-        modifier = modifier
-            .aspectRatio(PosterAspectRatio)
-            .shadow(
-                elevation = MaterialThemeElevationLevel2,
-                shape = MaterialTheme.shapes.medium,
-                ambientColor = shadowColor,
-                spotColor = shadowColor
-            )
-            .clip(MaterialTheme.shapes.medium)
+fun ExtraLargeShimmerPoster(modifier: Modifier = Modifier) {
+    ShimmerPoster(
+        modifier = modifier,
+        shape = MaterialTheme.shapes.extraLarge
+    )
+}
+
+@Composable
+private fun ShimmerPoster(shape: Shape, modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier.aspectRatio(PosterAspectRatio),
+        shape = shape
     ) {
-        content()
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .placeholder(
+                    visible = true,
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    highlight = PlaceholderHighlight.shimmer(Color.White)
+                )
+        )
     }
 }

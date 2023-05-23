@@ -9,6 +9,7 @@ androidGradlePlugin = "8.0.0"
 androidxActivity = "1.7.0"
 androidxComposeBom = "2023.04.00"
 androidxComposeCompiler = "1.4.5"
+androidxConstraintLayoutCompose = "1.0.1"
 androidxCore = "1.10.0"
 androidxHiltNavigationCompose = "1.0.0"
 androidxLifecycle = "2.6.1"
@@ -47,6 +48,7 @@ androidx-compose-ui-testManifest = { group = "androidx.compose.ui", name = "ui-t
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-ui-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-constraint-layout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "androidxConstraintLayoutCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
