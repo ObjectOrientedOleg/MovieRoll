@@ -6,4 +6,6 @@ import androidx.compose.ui.unit.dp
 object ThemeDefaults {
 
     val screenEdgePadding: Dp = 24.dp
+
+    val appBarPadding: Dp = 16.dp
 }

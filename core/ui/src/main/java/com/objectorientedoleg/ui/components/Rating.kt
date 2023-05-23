@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.BaselineShift
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.objectorientedoleg.core.ui.R
 import kotlin.math.roundToInt
 
 @Composable
@@ -48,7 +50,7 @@ fun Rating(
                             baselineShift = BaselineShift.Superscript
                         )
                     ) {
-                        append("/10")
+                        append(stringResource(R.string.rating_out_of_ten))
                     }
                 },
                 color = MaterialTheme.colorScheme.onTertiaryContainer,

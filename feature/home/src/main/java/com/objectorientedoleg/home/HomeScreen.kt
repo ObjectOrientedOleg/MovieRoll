@@ -16,9 +16,13 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -97,7 +101,21 @@ private fun HomeTopBar(scrollBehavior: TopAppBarScrollBehavior, modifier: Modifi
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             scrolledContainerColor = MaterialTheme.colorScheme.surface
         ),
-        scrollBehavior = scrollBehavior
+        scrollBehavior = scrollBehavior,
+        navigationIcon = {
+            Icon(
+                modifier = Modifier.padding(horizontal = ThemeDefaults.appBarPadding),
+                imageVector = Icons.Filled.Search,
+                contentDescription = stringResource(R.string.search_content_desc)
+            )
+        },
+        actions = {
+            Icon(
+                modifier = Modifier.padding(horizontal = ThemeDefaults.appBarPadding),
+                imageVector = Icons.Filled.AccountCircle,
+                contentDescription = stringResource(R.string.account_content_desc)
+            )
+        }
     )
 }
 

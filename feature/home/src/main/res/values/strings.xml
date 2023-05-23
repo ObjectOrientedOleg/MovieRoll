@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="home_title">Discover movies</string>
+
+    <string name="account_content_desc">Account</string>
+    <string name="search_content_desc">Search</string>
 </resources>
