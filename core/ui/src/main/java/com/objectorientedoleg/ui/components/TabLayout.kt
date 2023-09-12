@@ -31,7 +31,7 @@ fun TabLayout(
     tabContent: @Composable (index: Int) -> Unit
 ) {
     Column(modifier = modifier) {
-        val pagerState = rememberPagerState()
+        val pagerState = rememberPagerState { tabCount }
         val scope = rememberCoroutineScope()
 
         ScrollableTabRow(
@@ -51,7 +51,6 @@ fun TabLayout(
         }
         HorizontalPager(
             modifier = Modifier.fillMaxSize(),
-            pageCount = tabCount,
             state = pagerState,
             key = tabKey,
             userScrollEnabled = false

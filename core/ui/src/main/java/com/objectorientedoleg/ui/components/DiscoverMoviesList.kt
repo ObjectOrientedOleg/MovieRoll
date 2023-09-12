@@ -5,6 +5,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridItemScope
@@ -25,7 +26,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.itemsIndexed
 import com.objectorientedoleg.domain.model.DiscoverMovie
 
 fun LazyListScope.discoverMovieExtraLargeItems(
@@ -33,9 +33,9 @@ fun LazyListScope.discoverMovieExtraLargeItems(
     onItemClick: (DiscoverMovie) -> Unit,
     itemModifier: Modifier = Modifier
 ) {
-    itemsIndexed(
+    items(
         items = discoverMovies,
-        key = { _, discoverMovie -> discoverMovie.id }
+        key = { discoverMovie -> discoverMovie.id }
     ) { index, discoverMovie ->
         if (discoverMovie != null) {
             DiscoverMovieExtraLargeItem(
@@ -206,6 +206,26 @@ private fun SpinnerItem(modifier: Modifier = Modifier) {
 /*
 Copy of Paging Compose LazyListScope.items(...).
  */
+private fun <T : Any> LazyListScope.items(
+    items: LazyPagingItems<T>,
+    key: ((item: T) -> Any)? = null,
+    itemContent: @Composable LazyItemScope.(index: Int, item: T?) -> Unit
+) {
+    items(
+        count = items.itemCount,
+        key = if (key == null) null else { index ->
+            val item = items.peek(index)
+            if (item == null) {
+                PagingPlaceholderKey(index)
+            } else {
+                key(item)
+            }
+        }
+    ) { index ->
+        itemContent(index, items[index])
+    }
+}
+
 private fun <T : Any> LazyGridScope.items(
     items: LazyPagingItems<T>,
     key: ((item: T) -> Any)? = null,
