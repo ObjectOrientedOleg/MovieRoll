@@ -161,36 +161,41 @@ private fun CustomGenresTab(
 @Composable
 private fun CustomGenreRow(genre: DiscoverGenre.SingleGenre, modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxWidth()) {
-        val movies = genre.movies.paging.collectAsLazyPagingItems()
-
         Text(
             modifier = Modifier.padding(horizontal = ThemeDefaults.screenEdgePadding),
             text = genre.name,
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleMedium
         )
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(
-                start = ThemeDefaults.screenEdgePadding,
-                top = 12.dp,
-                end = ThemeDefaults.screenEdgePadding,
-                bottom = ThemeDefaults.screenEdgePadding
-            ),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            discoverMovieExtraLargeItems(
-                itemModifier = Modifier.width(250.dp),
-                discoverMovies = movies,
-                onItemClick = {}
-            )
-        }
+        CustomGenreMovies(genre.movies)
+    }
+}
+
+@Composable
+private fun CustomGenreMovies(discoverMovies: DiscoverMovies, modifier: Modifier = Modifier) {
+    val lazyPagingItems = discoverMovies.paging.collectAsLazyPagingItems()
+
+    LazyRow(
+        modifier = modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(
+            start = ThemeDefaults.screenEdgePadding,
+            top = 12.dp,
+            end = ThemeDefaults.screenEdgePadding,
+            bottom = ThemeDefaults.screenEdgePadding
+        ),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        discoverMovieExtraLargeItems(
+            itemModifier = Modifier.width(250.dp),
+            discoverMovies = lazyPagingItems,
+            onItemClick = {}
+        )
     }
 }
 
 @Composable
 private fun SingleGenreTab(discoverMovies: DiscoverMovies, modifier: Modifier = Modifier) {
-    val movies = discoverMovies.paging.collectAsLazyPagingItems()
+    val lazyPagingItems = discoverMovies.paging.collectAsLazyPagingItems()
 
     LazyVerticalGrid(
         modifier = modifier.fillMaxSize(),
@@ -206,7 +211,7 @@ private fun SingleGenreTab(discoverMovies: DiscoverMovies, modifier: Modifier = 
     ) {
         discoverMovieMediumItems(
             itemModifier = Modifier.fillMaxWidth(),
-            discoverMovies = movies,
+            discoverMovies = lazyPagingItems,
             onItemClick = {}
         )
     }
