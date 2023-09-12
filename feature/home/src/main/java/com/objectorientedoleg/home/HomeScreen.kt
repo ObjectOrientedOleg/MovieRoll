@@ -161,7 +161,7 @@ private fun CustomGenresTab(
 @Composable
 private fun CustomGenreRow(genre: DiscoverGenre.SingleGenre, modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxWidth()) {
-        val movies = genre.movies.data.collectAsLazyPagingItems()
+        val movies = genre.movies.paging.collectAsLazyPagingItems()
 
         Text(
             modifier = Modifier.padding(horizontal = ThemeDefaults.screenEdgePadding),
@@ -190,7 +190,7 @@ private fun CustomGenreRow(genre: DiscoverGenre.SingleGenre, modifier: Modifier 
 
 @Composable
 private fun SingleGenreTab(discoverMovies: DiscoverMovies, modifier: Modifier = Modifier) {
-    val movies = discoverMovies.data.collectAsLazyPagingItems()
+    val movies = discoverMovies.paging.collectAsLazyPagingItems()
 
     LazyVerticalGrid(
         modifier = modifier.fillMaxSize(),
