@@ -2,7 +2,6 @@ package com.objectorientedoleg.movieroll.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -22,10 +21,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.objectorientedoleg.home.navigation.homeScreen
+import com.objectorientedoleg.home.navigation.HomeGraphRoute
+import com.objectorientedoleg.home.navigation.homeGraph
 import com.objectorientedoleg.ui.theme.MovieRollTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieRollApp() {
     val darkTheme = isSystemInDarkTheme()
@@ -92,8 +91,12 @@ private fun MovieRollNavHost(navController: NavHostController, modifier: Modifie
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = TopLevelDestinations.Home.route
+        startDestination = HomeGraphRoute
     ) {
-        homeScreen(TopLevelDestinations.Home.route)
+        homeGraph(
+            onMovieClick = {}
+        ) {
+
+        }
     }
 }

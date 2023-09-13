@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.objectorientedoleg.home.navigation.HomeRoute
 import com.objectorientedoleg.movieroll.R
 
 enum class TopLevelDestinations(
@@ -14,7 +15,7 @@ enum class TopLevelDestinations(
     @StringRes val label: Int
 ) {
     Home(
-        route = "Home",
+        route = HomeRoute,
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.Home,
         label = R.string.destination_home_label

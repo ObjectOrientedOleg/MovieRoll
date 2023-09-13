@@ -50,6 +50,7 @@ import com.objectorientedoleg.ui.theme.ThemeDefaults
 
 @Composable
 internal fun HomeRoute(
+    onMovieClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -57,13 +58,18 @@ internal fun HomeRoute(
 
     HomeScreen(
         modifier = modifier,
-        uiState = uiState
+        uiState = uiState,
+        onMovieClick = onMovieClick
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun HomeScreen(uiState: HomeUiState, modifier: Modifier = Modifier) {
+private fun HomeScreen(
+    uiState: HomeUiState,
+    onMovieClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
@@ -81,7 +87,7 @@ private fun HomeScreen(uiState: HomeUiState, modifier: Modifier = Modifier) {
                 HomeLoadingIndicator()
             } else {
                 Spacer(modifier = Modifier.height(ThemeDefaults.screenEdgePadding))
-                HomeTabLayout(uiState.discoverGenresUiState)
+                HomeLayout(uiState.discoverGenresUiState, onMovieClick)
             }
         }
     }
@@ -120,22 +126,17 @@ private fun HomeTopBar(scrollBehavior: TopAppBarScrollBehavior, modifier: Modifi
 }
 
 @Composable
-private fun HomeTabLayout(uiState: DiscoverGenresUiState, modifier: Modifier = Modifier) {
+private fun HomeLayout(
+    uiState: DiscoverGenresUiState,
+    onMovieClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     when (uiState) {
-        is DiscoverGenresUiState.Loaded -> TabLayout(
-            modifier = modifier.fillMaxSize(),
-            tabCount = uiState.genres.size,
-            tabTitle = { index -> uiState.genres[index].name },
-            tabKey = { index -> uiState.genres[index].id }
-        ) { index ->
-            Column(modifier = Modifier.fillMaxSize()) {
-                Spacer(modifier = Modifier.height(ThemeDefaults.screenEdgePadding))
-                when (val discoverGenre = uiState.genres[index]) {
-                    is DiscoverGenre.CombinedGenres -> CustomGenresTab(discoverGenre.genres)
-                    is DiscoverGenre.SingleGenre -> SingleGenreTab(discoverGenre.movies)
-                }
-            }
-        }
+        is DiscoverGenresUiState.Loaded -> HomeTabLayout(
+            modifier = modifier,
+            discoverGenres = uiState.genres,
+            onMovieClick = onMovieClick
+        )
 
         is DiscoverGenresUiState.Loading -> HomeLoadingIndicator()
         is DiscoverGenresUiState.NotLoaded -> {}
@@ -143,8 +144,38 @@ private fun HomeTabLayout(uiState: DiscoverGenresUiState, modifier: Modifier = M
 }
 
 @Composable
+private fun HomeTabLayout(
+    discoverGenres: List<DiscoverGenre>,
+    onMovieClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    TabLayout(
+        modifier = modifier.fillMaxSize(),
+        tabCount = discoverGenres.size,
+        tabTitle = { index -> discoverGenres[index].name },
+        tabKey = { index -> discoverGenres[index].id }
+    ) { index ->
+        Column(modifier = Modifier.fillMaxSize()) {
+            Spacer(modifier = Modifier.height(ThemeDefaults.screenEdgePadding))
+            when (val discoverGenre = discoverGenres[index]) {
+                is DiscoverGenre.CombinedGenres -> CustomGenresTab(
+                    discoverGenre.genres,
+                    onMovieClick
+                )
+
+                is DiscoverGenre.SingleGenre -> SingleGenreTab(
+                    discoverGenre.movies,
+                    onMovieClick
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun CustomGenresTab(
     genres: List<DiscoverGenre.SingleGenre>,
+    onMovieClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -153,13 +184,17 @@ private fun CustomGenresTab(
             .verticalScroll(rememberScrollState())
     ) {
         genres.forEach { genre ->
-            CustomGenreRow(genre)
+            CustomGenreRow(genre, onMovieClick)
         }
     }
 }
 
 @Composable
-private fun CustomGenreRow(genre: DiscoverGenre.SingleGenre, modifier: Modifier = Modifier) {
+private fun CustomGenreRow(
+    genre: DiscoverGenre.SingleGenre,
+    onMovieClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
             modifier = Modifier.padding(horizontal = ThemeDefaults.screenEdgePadding),
@@ -167,12 +202,16 @@ private fun CustomGenreRow(genre: DiscoverGenre.SingleGenre, modifier: Modifier 
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleMedium
         )
-        CustomGenreMovies(genre.movies)
+        CustomGenreMovies(genre.movies, onMovieClick)
     }
 }
 
 @Composable
-private fun CustomGenreMovies(discoverMovies: DiscoverMovies, modifier: Modifier = Modifier) {
+private fun CustomGenreMovies(
+    discoverMovies: DiscoverMovies,
+    onMovieClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val lazyPagingItems = discoverMovies.paging.collectAsLazyPagingItems()
 
     LazyRow(
@@ -188,13 +227,17 @@ private fun CustomGenreMovies(discoverMovies: DiscoverMovies, modifier: Modifier
         discoverMovieExtraLargeItems(
             itemModifier = Modifier.width(250.dp),
             discoverMovies = lazyPagingItems,
-            onItemClick = {}
+            onItemClick = { discoverMovie -> onMovieClick(discoverMovie.id.toString()) }
         )
     }
 }
 
 @Composable
-private fun SingleGenreTab(discoverMovies: DiscoverMovies, modifier: Modifier = Modifier) {
+private fun SingleGenreTab(
+    discoverMovies: DiscoverMovies,
+    onMovieClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val lazyPagingItems = discoverMovies.paging.collectAsLazyPagingItems()
 
     LazyVerticalGrid(
@@ -212,7 +255,7 @@ private fun SingleGenreTab(discoverMovies: DiscoverMovies, modifier: Modifier = 
         discoverMovieMediumItems(
             itemModifier = Modifier.fillMaxWidth(),
             discoverMovies = lazyPagingItems,
-            onItemClick = {}
+            onItemClick = { discoverMovie -> onMovieClick(discoverMovie.id.toString()) }
         )
     }
 }
