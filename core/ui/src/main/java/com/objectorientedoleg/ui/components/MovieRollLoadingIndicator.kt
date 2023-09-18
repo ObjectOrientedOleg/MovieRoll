@@ -1,6 +1,5 @@
 package com.objectorientedoleg.ui.components
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -11,18 +10,12 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.objectorientedoleg.core.ui.R
+import com.objectorientedoleg.ui.theme.LocalLoadingIndicatorResource
 
 @Composable
-fun MovieRollLoadingIndicator(
-    modifier: Modifier = Modifier,
-    size: Dp = 48.dp,
-    darkTheme: Boolean = isSystemInDarkTheme()
-) {
+fun MovieRollLoadingIndicator(modifier: Modifier = Modifier, size: Dp = 48.dp) {
     val composition by rememberLottieComposition(
-        spec = LottieCompositionSpec.RawRes(
-            if (darkTheme) R.raw.movieroll_loading_light else R.raw.movieroll_loading_dark
-        )
+        spec = LottieCompositionSpec.RawRes(LocalLoadingIndicatorResource.current.id)
     )
 
     LottieAnimation(
