@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.accompanist.placeholder)
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.paging.runtime)
+    implementation(libs.lottie.compose)
 
     androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.compose.ui.test)

@@ -20,7 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.objectorientedoleg.domain.model.DiscoverGenre
 import com.objectorientedoleg.domain.model.DiscoverMovies
+import com.objectorientedoleg.ui.components.MovieRollLoadingIndicator
 import com.objectorientedoleg.ui.components.TabLayout
 import com.objectorientedoleg.ui.components.discoverMovieExtraLargeItems
 import com.objectorientedoleg.ui.components.discoverMovieMediumItems
@@ -266,7 +266,7 @@ private fun HomeLoadingIndicator(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        CircularProgressIndicator()
+        MovieRollLoadingIndicator()
     }
 }
 
