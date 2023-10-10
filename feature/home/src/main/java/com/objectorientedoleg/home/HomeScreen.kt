@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -109,18 +110,20 @@ private fun HomeTopBar(scrollBehavior: TopAppBarScrollBehavior, modifier: Modifi
         ),
         scrollBehavior = scrollBehavior,
         navigationIcon = {
-            Icon(
-                modifier = Modifier.padding(horizontal = ThemeDefaults.appBarPadding),
-                imageVector = Icons.Filled.Search,
-                contentDescription = stringResource(R.string.search_content_desc)
-            )
+            IconButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.Filled.Search,
+                    contentDescription = stringResource(R.string.search_content_desc)
+                )
+            }
         },
         actions = {
-            Icon(
-                modifier = Modifier.padding(horizontal = ThemeDefaults.appBarPadding),
-                imageVector = Icons.Filled.AccountCircle,
-                contentDescription = stringResource(R.string.account_content_desc)
-            )
+            IconButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.Filled.AccountCircle,
+                    contentDescription = stringResource(R.string.account_content_desc)
+                )
+            }
         }
     )
 }
