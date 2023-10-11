@@ -25,7 +25,7 @@ data class MovieDetailsEntity(
     @ColumnInfo(name = "homepage")
     val homepage: String?,
     @PrimaryKey @ColumnInfo(name = "id")
-    val id: Int,
+    val id: String,
     @ColumnInfo(name = "images")
     val images: Images,
     @ColumnInfo(name = "imdb_id")
@@ -73,7 +73,7 @@ data class MovieDetailsEntity(
             @SerialName("character") val character: String,
             @SerialName("credit_id") val creditId: String,
             @SerialName("gender") val gender: Int?,
-            @SerialName("id") val id: Int,
+            @SerialName("id") val id: String,
             @SerialName("known_for_department") val knownForDepartment: String,
             @SerialName("name") val name: String,
             @SerialName("order") val order: Int,
@@ -88,7 +88,7 @@ data class MovieDetailsEntity(
             @SerialName("credit_id") val creditId: String,
             @SerialName("department") val department: String,
             @SerialName("gender") val gender: Int?,
-            @SerialName("id") val id: Int,
+            @SerialName("id") val id: String,
             @SerialName("job") val job: String,
             @SerialName("known_for_department") val knownForDepartment: String,
             @SerialName("name") val name: String,
@@ -100,7 +100,7 @@ data class MovieDetailsEntity(
 
     @Serializable
     data class Genre(
-        @SerialName("id") val id: Int,
+        @SerialName("id") val id: String,
         @SerialName("name") val name: String
     )
 

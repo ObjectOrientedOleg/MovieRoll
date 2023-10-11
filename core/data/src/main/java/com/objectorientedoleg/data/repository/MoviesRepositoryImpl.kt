@@ -106,7 +106,7 @@ private fun NetworkMovie.asMovieEntity(
         backdropPath = backdropPath,
         genreIds = genreIds,
         id = buildEntityId(movieQuery),
-        movieId = id,
+        movieId = id.toString(),
         movieType = movieQuery.name,
         originalLanguage = originalLanguage,
         originalTitle = originalTitle,

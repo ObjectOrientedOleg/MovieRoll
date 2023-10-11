@@ -29,7 +29,7 @@ data class MovieEntity(
     @ColumnInfo(name = "id")
     val id: String,
     @ColumnInfo(name = "movie_id")
-    val movieId: Int,
+    val movieId: String,
     @ColumnInfo(name = "movie_type")
     val movieType: String,
     @ColumnInfo(name = "original_language")

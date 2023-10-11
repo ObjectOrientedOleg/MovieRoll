@@ -14,7 +14,7 @@ interface MovieDetailsDao {
     suspend fun insert(entity: MovieDetailsEntity)
 
     @Query("SELECT * FROM movie_details_table WHERE id = :movieId")
-    suspend fun getMovieDetails(movieId: Int): MovieDetailsEntity?
+    suspend fun getMovieDetails(movieId: String): MovieDetailsEntity?
 
     @Delete
     suspend fun delete(entity: MovieDetailsEntity)

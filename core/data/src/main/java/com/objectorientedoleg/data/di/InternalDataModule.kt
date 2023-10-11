@@ -4,6 +4,8 @@ import com.objectorientedoleg.data.repository.GenreRepository
 import com.objectorientedoleg.data.repository.GenreRepositoryImpl
 import com.objectorientedoleg.data.repository.ImageRepository
 import com.objectorientedoleg.data.repository.ImageRepositoryImpl
+import com.objectorientedoleg.data.repository.MovieDetailsRepository
+import com.objectorientedoleg.data.repository.MovieDetailsRepositoryImpl
 import com.objectorientedoleg.data.repository.MoviesRepository
 import com.objectorientedoleg.data.repository.MoviesRepositoryImpl
 import com.objectorientedoleg.data.sync.SyncManager
@@ -40,11 +42,18 @@ internal interface InternalDataModule {
 
     @Binds
     @Singleton
+    fun bindsMovieDetailsRepository(
+        impl: MovieDetailsRepositoryImpl
+    ): MovieDetailsRepository
+
+    @Binds
+    @Singleton
     fun bindsSyncManager(
         impl: SyncManagerImpl
     ): SyncManager
 
     @Binds
+    @Singleton
     fun bindsSynchronizer(
         impl: SynchronizerImpl
     ): Synchronizer
