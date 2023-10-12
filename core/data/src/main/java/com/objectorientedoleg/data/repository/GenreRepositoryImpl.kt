@@ -35,5 +35,5 @@ private fun List<GenreEntity>.asModels() = map(GenreEntity::asModel)
 
 private fun List<NetworkGenre>.asEntities() = map(NetworkGenre::asEntity)
 
-private fun NetworkGenre.asEntity() = GenreEntity(id = id, name = name)
+private fun NetworkGenre.asEntity() = GenreEntity(id = id.toString(), name = name)
 

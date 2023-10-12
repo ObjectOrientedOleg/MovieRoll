@@ -1,18 +1,18 @@
 package com.objectorientedoleg.domain.model
 
-sealed interface DiscoverGenre {
-    val id: Int
+sealed interface GenreItem {
+    val id: String
     val name: String
 
     data class SingleGenre(
-        override val id: Int,
+        override val id: String,
         override val name: String,
-        val movies: DiscoverMovies
-    ) : DiscoverGenre
+        val movies: MoviesItem
+    ) : GenreItem
 
     data class CombinedGenres(
-        override val id: Int,
+        override val id: String,
         override val name: String,
         val genres: List<SingleGenre>
-    ) : DiscoverGenre
+    ) : GenreItem
 }

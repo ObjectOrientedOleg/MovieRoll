@@ -1,5 +1,6 @@
 package com.objectorientedoleg.moviedetails
 
+import com.objectorientedoleg.domain.model.MovieDetailsItem
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -9,7 +10,7 @@ internal sealed interface MovieDetailsUiState {
 
     object NotLoaded : MovieDetailsUiState
 
-    data class Loaded(val title: String) : MovieDetailsUiState
+    data class Loaded(val item: MovieDetailsItem) : MovieDetailsUiState
 }
 
 @OptIn(ExperimentalContracts::class)

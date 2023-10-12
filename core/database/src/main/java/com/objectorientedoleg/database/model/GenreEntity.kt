@@ -10,7 +10,7 @@ import kotlinx.datetime.Instant
 data class GenreEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
-    val id: Int,
+    val id: String,
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "creation_date")

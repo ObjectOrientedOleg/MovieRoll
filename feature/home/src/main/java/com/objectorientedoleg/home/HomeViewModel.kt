@@ -7,8 +7,8 @@ import com.objectorientedoleg.data.repository.GenreRepository
 import com.objectorientedoleg.data.repository.MovieQuery
 import com.objectorientedoleg.data.sync.SyncManager
 import com.objectorientedoleg.data.type.MovieType
-import com.objectorientedoleg.domain.GetDiscoverMoviesUseCase
-import com.objectorientedoleg.domain.model.DiscoverGenre
+import com.objectorientedoleg.domain.GetMoviesItemUseCase
+import com.objectorientedoleg.domain.model.GenreItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     syncManager: SyncManager,
     genreRepository: GenreRepository,
-    getDiscoverMovies: GetDiscoverMoviesUseCase
+    getDiscoverMovies: GetMoviesItemUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<HomeUiState> = combine(
@@ -42,37 +42,37 @@ class HomeViewModel @Inject constructor(
 }
 
 private fun GenreRepository.getDiscoverGenres(
-    getDiscoverMovies: GetDiscoverMoviesUseCase
+    getDiscoverMovies: GetMoviesItemUseCase
 ) = getGenres().map { genres ->
     if (genres.isEmpty()) {
         return@map DiscoverGenresUiState.NotLoaded
     }
-    val discoverGenres = genres.mapTo(mutableListOf<DiscoverGenre>()) { genre ->
-        DiscoverGenre.SingleGenre(
+    val genreItems = genres.mapTo(mutableListOf<GenreItem>()) { genre ->
+        GenreItem.SingleGenre(
             id = genre.id,
             name = genre.name,
             movies = getDiscoverMovies(genre.toMovieQuery())
         )
     }
-    discoverGenres.apply {
+    genreItems.apply {
         sortBy { discoverGenre -> discoverGenre.name }
         val singleGenres = MovieType.values().map { movieType ->
-            DiscoverGenre.SingleGenre(
-                id = movieType.ordinal,
+            GenreItem.SingleGenre(
+                id = movieType.name,
                 name = movieType.displayName(),
                 movies = getDiscoverMovies(movieType.toMovieQuery())
             )
         }
         add(
             0,
-            DiscoverGenre.CombinedGenres(
-                id = -1,
+            GenreItem.CombinedGenres(
+                id = "Recommended",
                 name = "Recommended",
                 genres = singleGenres
             )
         )
     }
-    DiscoverGenresUiState.Loaded(discoverGenres)
+    DiscoverGenresUiState.Loaded(genreItems)
 }
     .onStart { emit(DiscoverGenresUiState.Loading) }
 

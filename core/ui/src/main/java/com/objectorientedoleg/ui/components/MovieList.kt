@@ -26,27 +26,27 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import com.objectorientedoleg.domain.model.DiscoverMovie
+import com.objectorientedoleg.domain.model.MovieItem
 
-fun LazyListScope.discoverMovieExtraLargeItems(
-    discoverMovies: LazyPagingItems<DiscoverMovie>,
-    onItemClick: (DiscoverMovie) -> Unit,
+fun LazyListScope.movieExtraLargeItems(
+    movieItems: LazyPagingItems<MovieItem>,
+    onItemClick: (MovieItem) -> Unit,
     itemModifier: Modifier = Modifier
 ) {
     items(
-        items = discoverMovies,
-        key = { discoverMovie -> discoverMovie.id }
-    ) { index, discoverMovie ->
-        if (discoverMovie != null) {
-            DiscoverMovieExtraLargeItem(
+        items = movieItems,
+        key = { movieItem -> movieItem.id }
+    ) { index, movieItem ->
+        if (movieItem != null) {
+            MovieExtraLargeItem(
                 modifier = itemModifier,
-                discoverMovie = discoverMovie,
+                movieItem = movieItem,
                 isFirstItem = index == 0,
                 onClick = onItemClick
             )
         }
     }
-    discoverMovies.run {
+    movieItems.run {
         when {
             loadState.refresh is LoadState.Loading -> repeat(2) {
                 item { ExtraLargeShimmerPoster(modifier = itemModifier) }
@@ -60,10 +60,10 @@ fun LazyListScope.discoverMovieExtraLargeItems(
 }
 
 @Composable
-private fun DiscoverMovieExtraLargeItem(
-    discoverMovie: DiscoverMovie,
+private fun MovieExtraLargeItem(
+    movieItem: MovieItem,
     isFirstItem: Boolean,
-    onClick: (DiscoverMovie) -> Unit,
+    onClick: (MovieItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
     ConstraintLayout(modifier = modifier) {
@@ -76,17 +76,17 @@ private fun DiscoverMovieExtraLargeItem(
                 end.linkTo(parent.end)
                 width = Dimension.fillToConstraints
             },
-            posterUrl = discoverMovie.posterUrl,
-            contentDescription = discoverMovie.title,
+            posterUrl = movieItem.posterUrl,
+            contentDescription = movieItem.title,
             sharpCorner = isFirstItem,
-            onClick = { onClick(discoverMovie) }
+            onClick = { onClick(movieItem) }
         )
         Rating(
             modifier = Modifier.constrainAs(rating) {
                 start.linkTo(anchor = poster.start, margin = 28.dp)
                 centerAround(poster.bottom)
             },
-            rating = discoverMovie.voteAverage,
+            rating = movieItem.voteAverage,
             largeText = true
         )
         Text(
@@ -96,10 +96,10 @@ private fun DiscoverMovieExtraLargeItem(
                 end.linkTo(parent.end)
             },
             text = buildAnnotatedString {
-                append(discoverMovie.title)
+                append(movieItem.title)
                 withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
                     append(" (")
-                    append(discoverMovie.releaseYear.toString())
+                    append(movieItem.releaseYear.toString())
                     append(")")
                 }
             },
@@ -111,24 +111,24 @@ private fun DiscoverMovieExtraLargeItem(
     }
 }
 
-fun LazyGridScope.discoverMovieMediumItems(
-    discoverMovies: LazyPagingItems<DiscoverMovie>,
-    onItemClick: (DiscoverMovie) -> Unit,
+fun LazyGridScope.movieMediumItems(
+    movieItems: LazyPagingItems<MovieItem>,
+    onItemClick: (MovieItem) -> Unit,
     itemModifier: Modifier = Modifier
 ) {
     items(
-        items = discoverMovies,
-        key = { discoverMovie -> discoverMovie.id }
-    ) { discoverMovie ->
-        if (discoverMovie != null) {
-            DiscoverMovieMediumItem(
+        items = movieItems,
+        key = { movieItem -> movieItem.id }
+    ) { movieItem ->
+        if (movieItem != null) {
+            MovieMediumItem(
                 modifier = itemModifier,
-                discoverMovie = discoverMovie,
+                movieItem = movieItem,
                 onClick = onItemClick
             )
         }
     }
-    discoverMovies.run {
+    movieItems.run {
         when {
             loadState.refresh is LoadState.Loading -> repeat(4) {
                 item { MediumShimmerPoster(modifier = itemModifier) }
@@ -144,9 +144,9 @@ fun LazyGridScope.discoverMovieMediumItems(
 }
 
 @Composable
-private fun DiscoverMovieMediumItem(
-    discoverMovie: DiscoverMovie,
-    onClick: (DiscoverMovie) -> Unit,
+private fun MovieMediumItem(
+    movieItem: MovieItem,
+    onClick: (MovieItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
     ConstraintLayout(modifier = modifier) {
@@ -159,16 +159,16 @@ private fun DiscoverMovieMediumItem(
                 end.linkTo(parent.end)
                 width = Dimension.fillToConstraints
             },
-            posterUrl = discoverMovie.posterUrl,
-            contentDescription = discoverMovie.title,
-            onClick = { onClick(discoverMovie) }
+            posterUrl = movieItem.posterUrl,
+            contentDescription = movieItem.title,
+            onClick = { onClick(movieItem) }
         )
         Rating(
             modifier = Modifier.constrainAs(rating) {
                 start.linkTo(anchor = poster.start, margin = 12.dp)
                 centerAround(poster.bottom)
             },
-            rating = discoverMovie.voteAverage
+            rating = movieItem.voteAverage
         )
         Text(
             modifier = Modifier.constrainAs(title) {
@@ -177,10 +177,10 @@ private fun DiscoverMovieMediumItem(
                 end.linkTo(parent.end)
             },
             text = buildAnnotatedString {
-                append(discoverMovie.title)
+                append(movieItem.title)
                 withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
                     append(" (")
-                    append(discoverMovie.releaseYear.toString())
+                    append(movieItem.releaseYear.toString())
                     append(")")
                 }
             },

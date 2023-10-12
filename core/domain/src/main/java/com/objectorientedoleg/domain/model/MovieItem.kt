@@ -1,7 +1,7 @@
 package com.objectorientedoleg.domain.model
 
-data class DiscoverMovie(
-    val id: Int,
+data class MovieItem(
+    val id: String,
     val posterUrl: ImageUrl?,
     val releaseYear: Int,
     val title: String,

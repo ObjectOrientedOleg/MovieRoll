@@ -36,6 +36,14 @@ android {
     kotlinOptions {
         jvmTarget = libs.versions.jvmTarget.get()
     }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
+    }
 }
 
 kapt {
@@ -43,8 +51,10 @@ kapt {
 }
 
 dependencies {
-    implementation(project(":core:colorpalette"))
     implementation(project(":core:data"))
+
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.runtime)
 
     implementation(libs.androidx.paging.runtime)
     implementation(libs.hilt.android)

@@ -6,18 +6,18 @@ import com.objectorientedoleg.data.repository.ImageRepository
 import com.objectorientedoleg.data.repository.MovieQuery
 import com.objectorientedoleg.data.repository.MoviesRepository
 import com.objectorientedoleg.data.type.ImageType
-import com.objectorientedoleg.domain.model.DiscoverMovie
-import com.objectorientedoleg.domain.model.DiscoverMovies
+import com.objectorientedoleg.domain.model.MovieItem
+import com.objectorientedoleg.domain.model.MoviesItem
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.toLocalDate
 import javax.inject.Inject
 
-class GetDiscoverMoviesUseCase @Inject constructor(
+class GetMoviesItemUseCase @Inject constructor(
     private val moviesRepository: MoviesRepository,
     private val imageRepository: ImageRepository
 ) {
 
-    operator fun invoke(movieQuery: MovieQuery): DiscoverMovies = DiscoverMovies {
+    operator fun invoke(movieQuery: MovieQuery): MoviesItem = MoviesItem {
         moviesRepository.getMovies(movieQuery).map { pagingData ->
             pagingData.map { movie ->
                 val image = movie.posterPath?.let { path ->
@@ -27,7 +27,7 @@ class GetDiscoverMoviesUseCase @Inject constructor(
                     val localDate = date.toLocalDate()
                     localDate.year
                 }
-                DiscoverMovie(
+                MovieItem(
                     id = movie.id,
                     posterUrl = image?.url,
                     releaseYear = releaseYear,

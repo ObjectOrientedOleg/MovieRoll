@@ -2,16 +2,16 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c1df0754f164e027989476b30d882960",
+    "identityHash": "99c6c95b314376d8d7534f178f6f8f68",
     "entities": [
       {
         "tableName": "genre_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `creation_date` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `creation_date` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -100,7 +100,7 @@
       },
       {
         "tableName": "movie_details_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`adult` INTEGER NOT NULL, `backdrop_path` TEXT, `budget` INTEGER NOT NULL, `certification` TEXT, `credits` TEXT NOT NULL, `genres` TEXT NOT NULL, `homepage` TEXT, `id` INTEGER NOT NULL, `images` TEXT NOT NULL, `imdb_id` TEXT, `original_language` TEXT NOT NULL, `original_title` TEXT NOT NULL, `overview` TEXT, `popularity` REAL NOT NULL, `poster_path` TEXT, `release_date` TEXT NOT NULL, `revenue` INTEGER NOT NULL, `runtime` INTEGER, `status` TEXT NOT NULL, `tagline` TEXT, `title` TEXT NOT NULL, `video` INTEGER NOT NULL, `vote_average` REAL NOT NULL, `vote_count` INTEGER NOT NULL, `creation_date` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`adult` INTEGER NOT NULL, `backdrop_path` TEXT, `budget` INTEGER NOT NULL, `certification` TEXT, `credits` TEXT NOT NULL, `genres` TEXT NOT NULL, `homepage` TEXT, `id` TEXT NOT NULL, `images` TEXT NOT NULL, `imdb_id` TEXT, `original_language` TEXT NOT NULL, `original_title` TEXT NOT NULL, `overview` TEXT, `popularity` REAL NOT NULL, `poster_path` TEXT, `release_date` TEXT NOT NULL, `revenue` INTEGER NOT NULL, `runtime` INTEGER, `status` TEXT NOT NULL, `tagline` TEXT, `title` TEXT NOT NULL, `video` INTEGER NOT NULL, `vote_average` REAL NOT NULL, `vote_count` INTEGER NOT NULL, `creation_date` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "adult",
@@ -147,7 +147,7 @@
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -264,7 +264,7 @@
       },
       {
         "tableName": "movie_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`adult` INTEGER NOT NULL, `backdrop_path` TEXT, `genre_ids` TEXT NOT NULL, `id` TEXT NOT NULL, `movie_id` INTEGER NOT NULL, `movie_type` TEXT NOT NULL, `original_language` TEXT NOT NULL, `original_title` TEXT NOT NULL, `overview` TEXT NOT NULL, `page` INTEGER NOT NULL, `page_id` TEXT NOT NULL, `popularity` REAL NOT NULL, `poster_path` TEXT, `release_date` TEXT NOT NULL, `title` TEXT NOT NULL, `video` INTEGER NOT NULL, `vote_average` REAL NOT NULL, `vote_count` INTEGER NOT NULL, `creation_date` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`page_id`) REFERENCES `movie_page_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`adult` INTEGER NOT NULL, `backdrop_path` TEXT, `genre_ids` TEXT NOT NULL, `id` TEXT NOT NULL, `movie_id` TEXT NOT NULL, `movie_type` TEXT NOT NULL, `original_language` TEXT NOT NULL, `original_title` TEXT NOT NULL, `overview` TEXT NOT NULL, `page` INTEGER NOT NULL, `page_id` TEXT NOT NULL, `popularity` REAL NOT NULL, `poster_path` TEXT, `release_date` TEXT NOT NULL, `title` TEXT NOT NULL, `video` INTEGER NOT NULL, `vote_average` REAL NOT NULL, `vote_count` INTEGER NOT NULL, `creation_date` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`page_id`) REFERENCES `movie_page_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "adult",
@@ -293,7 +293,7 @@
           {
             "fieldPath": "movieId",
             "columnName": "movie_id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -456,7 +456,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c1df0754f164e027989476b30d882960')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '99c6c95b314376d8d7534f178f6f8f68')"
     ]
   }
 }

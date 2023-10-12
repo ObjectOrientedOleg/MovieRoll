@@ -15,5 +15,5 @@ sealed interface MovieQuery {
 
     data class ByType(val type: MovieType, override val name: String = type.name) : MovieQuery
 
-    data class ByGenreId(val id: Int, override val name: String) : MovieQuery
+    data class ByGenreId(val id: String, override val name: String) : MovieQuery
 }

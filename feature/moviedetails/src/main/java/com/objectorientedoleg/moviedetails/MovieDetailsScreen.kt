@@ -48,7 +48,7 @@ private fun MovieDetailsScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             if (uiState.isLoaded()) {
-                MovieDetailsTopBar(uiState.title, onBackClick)
+                MovieDetailsTopBar(uiState.item.title, onBackClick)
             }
         }
     ) { innerPadding ->
@@ -94,10 +94,7 @@ private fun BoxScope.MovieDetailsLayout(
 ) {
     when (uiState) {
         is MovieDetailsUiState.Loaded -> TODO()
-        is MovieDetailsUiState.Loading -> MovieRollLoadingIndicator(
-            modifier = Modifier.align(Alignment.Center)
-        )
-
+        is MovieDetailsUiState.Loading -> MovieRollLoadingIndicator(Modifier.align(Alignment.Center))
         is MovieDetailsUiState.NotLoaded -> TODO()
     }
 }

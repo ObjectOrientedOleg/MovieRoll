@@ -77,7 +77,10 @@ internal class MoviesRepositoryImpl @Inject constructor(
                     MovieType.UpComing -> networkDataSource.getUpcomingMovies(page)
                 }
 
-                is MovieQuery.ByGenreId -> networkDataSource.getMoviesByGenre(movieQuery.id, page)
+                is MovieQuery.ByGenreId -> networkDataSource.getMoviesByGenre(
+                    genreId = movieQuery.id.toInt(),
+                    page = page
+                )
             }
         }
 }
