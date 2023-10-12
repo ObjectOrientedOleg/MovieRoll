@@ -23,6 +23,8 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.objectorientedoleg.home.navigation.HomeGraphRoute
 import com.objectorientedoleg.home.navigation.homeGraph
+import com.objectorientedoleg.moviedetails.navigation.movieDetailsScreen
+import com.objectorientedoleg.moviedetails.navigation.navigateToMovie
 import com.objectorientedoleg.ui.theme.MovieRollTheme
 
 @Composable
@@ -93,10 +95,8 @@ private fun MovieRollNavHost(navController: NavHostController, modifier: Modifie
         navController = navController,
         startDestination = HomeGraphRoute
     ) {
-        homeGraph(
-            onMovieClick = {}
-        ) {
-
+        homeGraph(onMovieClick = navController::navigateToMovie) {
+            movieDetailsScreen(onBackClick = navController::popBackStack)
         }
     }
 }
