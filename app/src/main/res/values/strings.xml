@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Movie Roll</string>
-
     <string name="destination_home_label">Home</string>
+    <string name="destination_genres_label">Genres</string>
 </resources>

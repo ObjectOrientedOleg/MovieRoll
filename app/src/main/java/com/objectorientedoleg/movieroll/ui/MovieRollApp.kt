@@ -2,14 +2,7 @@ package com.objectorientedoleg.movieroll.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarDefaults
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -21,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.objectorientedoleg.feature.genres.navigation.genresGraph
 import com.objectorientedoleg.home.navigation.HomeGraphRoute
 import com.objectorientedoleg.home.navigation.homeGraph
 import com.objectorientedoleg.moviedetails.navigation.movieDetailsScreen
@@ -96,6 +90,13 @@ private fun MovieRollNavHost(navController: NavHostController, modifier: Modifie
         startDestination = HomeGraphRoute
     ) {
         homeGraph(onMovieClick = navController::navigateToMovie) {
+            movieDetailsScreen(onBackClick = navController::popBackStack)
+        }
+        genresGraph(
+            onSearchClick = {},
+            onAccountClick = {},
+            onMovieClick = navController::navigateToMovie
+        ) {
             movieDetailsScreen(onBackClick = navController::popBackStack)
         }
     }
