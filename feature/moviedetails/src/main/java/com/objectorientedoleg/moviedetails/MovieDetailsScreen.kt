@@ -138,12 +138,12 @@ private fun MovieDetailsLoadedLayout(
         )
         Spacer(Modifier.height(16.dp))
         val tagline = movieDetailsItem.tagline
-        if (tagline != null) {
+        if (!tagline.isNullOrEmpty()) {
             MovieDetailsTagline(tagline)
             Spacer(Modifier.height(16.dp))
         }
         val overview = movieDetailsItem.overview
-        if (overview != null) {
+        if (!overview.isNullOrEmpty()) {
             MovieDetailsAbout(overview)
             Spacer(Modifier.height(16.dp))
         }
@@ -212,17 +212,23 @@ private fun MovieDetailsPoster(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 val certification = movieDetailsItem.certification
-                if (certification != null) {
+                if (!certification.isNullOrEmpty()) {
                     MovieDetailsCertification(certification)
-                    Divider(Modifier.fillMaxWidth())
+                    Divider(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = MaterialTheme.colorScheme.outline
+                    )
                 }
                 val runtime = movieDetailsItem.runtime
-                if (runtime != null) {
+                if (!runtime.isNullOrEmpty()) {
                     Text(
                         text = runtime,
                         style = MaterialTheme.typography.titleMedium
                     )
-                    Divider(Modifier.fillMaxWidth())
+                    Divider(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = MaterialTheme.colorScheme.outline
+                    )
                 }
                 Text(
                     text = buildAnnotatedString {
@@ -238,7 +244,10 @@ private fun MovieDetailsPoster(
                     },
                     style = MaterialTheme.typography.titleMedium
                 )
-                Divider(Modifier.fillMaxWidth())
+                Divider(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.outline
+                )
                 IconButton(
                     onClick = { onBookmarkClick(movieDetailsItem.id) },
                     colors = IconButtonDefaults.iconButtonColors(
