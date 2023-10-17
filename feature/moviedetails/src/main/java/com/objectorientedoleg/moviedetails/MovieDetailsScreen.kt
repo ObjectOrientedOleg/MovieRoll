@@ -65,7 +65,7 @@ private fun MovieDetailsScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            MovieDetailsLayout(
+            MovieDetailsContent(
                 uiState = uiState,
                 onBookmarkClick = onBookmarkClick,
                 onGenreClick = onGenreClick
@@ -103,7 +103,7 @@ private fun MovieDetailsTopBar(
 }
 
 @Composable
-private fun BoxScope.MovieDetailsLayout(
+private fun BoxScope.MovieDetailsContent(
     uiState: MovieDetailsUiState,
     onBookmarkClick: (String) -> Unit,
     onGenreClick: (String) -> Unit

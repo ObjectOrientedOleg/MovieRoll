@@ -130,7 +130,7 @@ fun LazyGridScope.movieMediumItems(
     }
     movieItems.run {
         when {
-            loadState.refresh is LoadState.Loading -> repeat(4) {
+            loadState.refresh is LoadState.Loading -> repeat(6) {
                 item { MediumShimmerPoster(modifier = itemModifier) }
             }
 

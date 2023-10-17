@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account">Account</string>
     <string name="back">Back</string>
     <string name="rating_out_of_ten">/10</string>
+    <string name="search">Search</string>
 </resources>
