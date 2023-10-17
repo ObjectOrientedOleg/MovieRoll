@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about">About</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="cast">Cast</string>
+    <string name="crew">Crew</string>
+    <string name="genres">Genres</string>
+    <string name="images">Images</string>
+    <string name="release_date">Release date</string>
+</resources>

@@ -43,6 +43,8 @@ kapt {
 }
 
 dependencies {
+    api(libs.kotlinx.collections.immutable)
+
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)

@@ -1,6 +1,6 @@
 package com.objectorientedoleg.ui.components
 
-import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -18,10 +18,7 @@ fun MovieRollLoadingIndicator(modifier: Modifier = Modifier) {
     )
 
     LottieAnimation(
-        modifier = modifier.sizeIn(
-            minWidth = LoadingIndicatorDefaultSize,
-            minHeight = LoadingIndicatorDefaultSize
-        ),
+        modifier = modifier.size(LoadingIndicatorDefaultSize),
         composition = composition,
         iterations = LottieConstants.IterateForever
     )

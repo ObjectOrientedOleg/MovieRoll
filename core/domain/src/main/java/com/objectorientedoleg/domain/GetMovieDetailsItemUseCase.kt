@@ -1,14 +1,19 @@
 package com.objectorientedoleg.domain
 
+import com.objectorientedoleg.common.immutable.mapNotNullToImmutableList
+import com.objectorientedoleg.common.immutable.mapToImmutableList
 import com.objectorientedoleg.data.model.MovieDetails
 import com.objectorientedoleg.data.repository.ImageParams
 import com.objectorientedoleg.data.repository.ImageRepository
 import com.objectorientedoleg.data.repository.MovieDetailsRepository
 import com.objectorientedoleg.data.type.ImageType
-import com.objectorientedoleg.domain.model.ImageUrl
 import com.objectorientedoleg.domain.model.MovieDetailsItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.toJavaLocalDate
+import kotlinx.datetime.toLocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import javax.inject.Inject
 
 class GetMovieDetailsItemUseCase @Inject constructor(
@@ -19,55 +24,90 @@ class GetMovieDetailsItemUseCase @Inject constructor(
     operator fun invoke(movieId: String): Flow<MovieDetailsItem?> =
         movieDetailsRepository.getMovieDetails(movieId)
             .map { result ->
-                result.getOrNull()?.let { movieDetails ->
-                    val image = movieDetails.backdropPath?.let { path ->
-                        imageRepository.getImage(ImageParams(path, ImageType.Backdrop))
-                    }
-                    movieDetails.asModel(image?.url)
-                }
+                val movieDetails = result.getOrNull()
+                movieDetails?.asModel(imageRepository)
             }
 }
 
-private fun MovieDetails.asModel(backdropUrl: ImageUrl?) =
+private suspend fun MovieDetails.asModel(imageRepository: ImageRepository) =
     MovieDetailsItem(
-        backdropUrl = backdropUrl,
+        backdropUrls = images.toBackdropUrls(imageRepository),
         budget = budget,
         certification = certification,
-        credits = credits.asModel(),
-        genres = genres.map(MovieDetails.Genre::asModel),
+        credits = credits.asModel(imageRepository),
+        genres = genres.mapToImmutableList(MovieDetails.Genre::asModel),
         id = id,
         overview = overview,
-        popularity = popularity,
-        posterPath = posterPath,
-        releaseDate = releaseDate,
+        popularity = popularity.toDecimalString(),
+        posterUrl = posterPath?.toImageUrl(imageRepository, ImageType.Poster),
+        releaseDate = releaseDate.toReleaseDateString(),
         revenue = revenue,
-        runtime = runtime,
+        runtime = runtime?.toRuntimeString(),
         status = status,
         tagline = tagline,
         title = title,
-        voteAverage = voteAverage,
+        voteAverage = voteAverage.toDecimalString(),
         voteCount = voteCount
     )
 
-private fun MovieDetails.Credits.asModel() =
+private suspend fun MovieDetails.Credits.asModel(imageRepository: ImageRepository) =
     MovieDetailsItem.Credits(
-        cast = cast.map(MovieDetails.Credits.Cast::asModel),
-        crew = crew.map(MovieDetails.Credits.Crew::asModel)
+        cast = cast.mapToImmutableList { it.asModel(imageRepository) },
+        crew = crew.mapToImmutableList { it.asModel(imageRepository) }
     )
 
-private fun MovieDetails.Credits.Cast.asModel() =
-    MovieDetailsItem.Credits.Cast(
-        character = character,
+private suspend fun MovieDetails.Credits.Cast.asModel(imageRepository: ImageRepository) =
+    MovieDetailsItem.Credits.Credit(
         name = name,
-        order = order,
-        profilePath = profilePath
+        description = character,
+        profileUrl = profilePath?.toImageUrl(imageRepository, ImageType.Profile)
     )
 
-private fun MovieDetails.Credits.Crew.asModel() =
-    MovieDetailsItem.Credits.Crew(
-        job = job,
+private suspend fun MovieDetails.Credits.Crew.asModel(imageRepository: ImageRepository) =
+    MovieDetailsItem.Credits.Credit(
         name = name,
-        profilePath = profilePath
+        description = job,
+        profileUrl = profilePath?.toImageUrl(imageRepository, ImageType.Profile)
     )
 
-private fun MovieDetails.Genre.asModel() = MovieDetailsItem.Genre(name)
+private fun MovieDetails.Genre.asModel() =
+    MovieDetailsItem.Genre(
+        id = id,
+        name = name
+    )
+
+private suspend fun MovieDetails.Images.toBackdropUrls(imageRepository: ImageRepository) =
+    backdrops.mapNotNullToImmutableList { image ->
+        val backdrop = imageRepository.getImage(ImageParams(image.path, ImageType.Backdrop))
+        backdrop?.url
+    }
+
+private suspend fun String.toImageUrl(
+    imageRepository: ImageRepository,
+    imageType: ImageType
+) = let { posterPath ->
+    val poster = imageRepository.getImage(ImageParams(posterPath, imageType))
+    poster?.url
+}
+
+private fun String.toReleaseDateString() = let { releaseDate ->
+    val date = releaseDate.toLocalDate()
+    val formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.US)
+    formatter.format(date.toJavaLocalDate())
+}
+
+private fun Int.toRuntimeString() = let { runTime ->
+    if (runTime > 0) {
+        val hours = runTime / 60
+        val minutes = runTime % 60
+        if (hours > 0) {
+            "${hours}h ${minutes}m"
+        } else {
+            "${minutes}m"
+        }
+    } else {
+        null
+    }
+}
+
+private fun Double.toDecimalString() = String.format("%.1f", this)

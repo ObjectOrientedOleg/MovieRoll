@@ -69,7 +69,7 @@ private fun MovieExtraLargeItem(
     ConstraintLayout(modifier = modifier) {
         val (poster, rating, title) = createRefs()
 
-        ExtraLargePoster(
+        ExtraLargeElevatedPoster(
             modifier = Modifier.constrainAs(poster) {
                 start.linkTo(parent.start)
                 top.linkTo(parent.top)
@@ -152,7 +152,7 @@ private fun MovieMediumItem(
     ConstraintLayout(modifier = modifier) {
         val (poster, rating, title) = createRefs()
 
-        MediumPoster(
+        MediumElevatedPoster(
             modifier = Modifier.constrainAs(poster) {
                 start.linkTo(parent.start)
                 top.linkTo(parent.top)

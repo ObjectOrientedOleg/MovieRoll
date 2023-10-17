@@ -18,11 +18,9 @@ import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer
 import com.objectorientedoleg.domain.model.ImageUrl
 
-private const val PosterAspectRatio = 2f / 3
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MediumPoster(
+fun MediumElevatedPoster(
     posterUrl: ImageUrl?,
     contentDescription: String?,
     onClick: () -> Unit,
@@ -49,9 +47,27 @@ fun MediumShimmerPoster(modifier: Modifier = Modifier) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExtraLargePoster(
+    posterUrl: ImageUrl?,
+    contentDescription: String?,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier.aspectRatio(PosterAspectRatio),
+        shape = MaterialTheme.shapes.extraLarge
+    ) {
+        SizedAsyncImage(
+            modifier = Modifier.fillMaxSize(),
+            imageUrl = posterUrl,
+            contentDescription = contentDescription
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ExtraLargeElevatedPoster(
     posterUrl: ImageUrl?,
     contentDescription: String?,
     onClick: () -> Unit,
@@ -102,3 +118,5 @@ private fun ShimmerPoster(shape: Shape, modifier: Modifier = Modifier) {
         )
     }
 }
+
+private const val PosterAspectRatio = 2f / 3
