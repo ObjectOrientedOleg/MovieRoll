@@ -131,7 +131,7 @@ private fun MovieDetailsLoadedLayout(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(ThemeDefaults.screenEdgePadding))
         MovieDetailsPoster(
             movieDetailsItem = movieDetailsItem,
             onBookmarkClick = onBookmarkClick
@@ -172,7 +172,7 @@ private fun MovieDetailsLoadedLayout(
         }
         if (movieDetailsItem.backdropUrls.isNotEmpty()) {
             MovieDetailsBackdrops(movieDetailsItem.backdropUrls)
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(ThemeDefaults.screenEdgePadding))
         }
     }
 }
