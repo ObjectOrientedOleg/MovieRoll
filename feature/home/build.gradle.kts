@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.objectorientedoleg.home"
+    namespace = "com.objectorientedoleg.feature.home"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

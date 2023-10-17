@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.objectorientedoleg.domain"
+    namespace = "com.objectorientedoleg.core.domain"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

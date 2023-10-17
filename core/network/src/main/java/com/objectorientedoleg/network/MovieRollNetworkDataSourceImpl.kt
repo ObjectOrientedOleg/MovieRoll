@@ -1,12 +1,9 @@
 package com.objectorientedoleg.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.objectorientedoleg.core.network.BuildConfig
 import com.objectorientedoleg.network.intercepter.OAuthInterceptor
-import com.objectorientedoleg.network.model.NetworkConfiguration
-import com.objectorientedoleg.network.model.NetworkGenres
-import com.objectorientedoleg.network.model.NetworkImageConfiguration
-import com.objectorientedoleg.network.model.NetworkMovieDetails
-import com.objectorientedoleg.network.model.NetworkMovies
+import com.objectorientedoleg.network.model.*
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient

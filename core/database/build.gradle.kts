@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.objectorientedoleg.database"
+    namespace = "com.objectorientedoleg.core.database"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

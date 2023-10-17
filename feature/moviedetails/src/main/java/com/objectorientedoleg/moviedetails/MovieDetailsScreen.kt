@@ -25,6 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.objectorientedoleg.domain.model.ImageUrl
 import com.objectorientedoleg.domain.model.MovieDetailsItem
+import com.objectorientedoleg.feature.moviedetails.R
 import com.objectorientedoleg.ui.components.ExtraLargePoster
 import com.objectorientedoleg.ui.components.MovieRollLoadingIndicator
 import com.objectorientedoleg.ui.theme.ThemeDefaults

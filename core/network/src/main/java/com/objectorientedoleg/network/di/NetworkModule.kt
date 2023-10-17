@@ -3,7 +3,7 @@ package com.objectorientedoleg.network.di
 import android.content.Context
 import coil.ImageLoader
 import coil.util.DebugLogger
-import com.objectorientedoleg.network.BuildConfig
+import com.objectorientedoleg.core.network.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

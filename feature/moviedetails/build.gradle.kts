@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.objectorientedoleg.moviedetails"
+    namespace = "com.objectorientedoleg.feature.moviedetails"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

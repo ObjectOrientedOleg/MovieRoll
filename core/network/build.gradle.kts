@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.objectorientedoleg.network"
+    namespace = "com.objectorientedoleg.core.network"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

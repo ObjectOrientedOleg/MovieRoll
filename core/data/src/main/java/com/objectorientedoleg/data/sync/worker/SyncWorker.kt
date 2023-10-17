@@ -4,20 +4,12 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.hilt.work.HiltWorker
-import androidx.work.Constraints
-import androidx.work.CoroutineWorker
-import androidx.work.ForegroundInfo
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequest
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.OutOfQuotaPolicy
-import androidx.work.WorkerParameters
+import androidx.work.*
 import com.objectorientedoleg.common.dispatchers.Dispatcher
 import com.objectorientedoleg.common.dispatchers.MovieRollDispatchers.*
-import com.objectorientedoleg.data.R
+import com.objectorientedoleg.core.data.R
 import com.objectorientedoleg.data.repository.GenreRepository
 import com.objectorientedoleg.data.repository.ImageRepository
 import com.objectorientedoleg.data.sync.Synchronizer
@@ -76,19 +68,17 @@ private fun Context.getSyncForegroundInfo() =
     )
 
 private fun Context.getSyncWorkNotification(): Notification {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val channel = NotificationChannel(
-            SyncNotificationChannelID,
-            getString(R.string.sync_notification_channel_name),
-            NotificationManager.IMPORTANCE_DEFAULT
-        ).apply {
-            description = getString(R.string.sync_notification_channel_description)
-        }
-
-        val notificationManager: NotificationManager? =
-            getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
-        notificationManager?.createNotificationChannel(channel)
+    val channel = NotificationChannel(
+        SyncNotificationChannelID,
+        getString(R.string.sync_notification_channel_name),
+        NotificationManager.IMPORTANCE_DEFAULT
+    ).apply {
+        description = getString(R.string.sync_notification_channel_description)
     }
+
+    val notificationManager: NotificationManager? =
+        getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+    notificationManager?.createNotificationChannel(channel)
 
     // TODO add small icon
     return NotificationCompat.Builder(this, SyncNotificationChannelID)
