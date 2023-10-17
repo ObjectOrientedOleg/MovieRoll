@@ -207,7 +207,10 @@ private fun MovieDetailsPoster(
                 modifier = Modifier
                     .width(IntrinsicSize.Max)
                     .fillMaxHeight()
-                    .padding(ThemeDefaults.screenEdgePadding),
+                    .padding(
+                        horizontal = 16.dp,
+                        vertical = 32.dp
+                    ),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
