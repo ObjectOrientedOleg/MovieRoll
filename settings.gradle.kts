@@ -14,7 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Movie Roll"
 include("app")
-include(":core:colorpalette")
 include(":core:common")
 include(":core:data")
 include(":core:database")

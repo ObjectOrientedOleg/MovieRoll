@@ -58,7 +58,6 @@ dependencies {
     debugApi(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.testManifest)
 
-    implementation(project(":core:colorpalette"))
     implementation(project(":core:domain"))
 
     implementation(libs.accompanist.placeholder)
