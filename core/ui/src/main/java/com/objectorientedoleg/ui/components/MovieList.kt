@@ -3,8 +3,7 @@ package com.objectorientedoleg.ui.components
 import android.annotation.SuppressLint
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -16,6 +15,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -153,33 +154,19 @@ private fun MovieMediumItem(
     onClick: (MovieItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    ConstraintLayout(modifier = modifier) {
-        val (poster, rating, title) = createRefs()
-
-        MediumElevatedPoster(
-            modifier = Modifier.constrainAs(poster) {
-                start.linkTo(parent.start)
-                top.linkTo(parent.top)
-                end.linkTo(parent.end)
-                width = Dimension.fillToConstraints
-            },
-            posterUrl = movieItem.posterUrl,
-            contentDescription = movieItem.title,
-            onClick = { onClick(movieItem) }
-        )
-        Rating(
-            modifier = Modifier.constrainAs(rating) {
-                start.linkTo(anchor = poster.start, margin = 12.dp)
-                centerAround(poster.bottom)
-            },
-            rating = movieItem.voteAverage
-        )
+    Column(modifier = modifier) {
+        ImageDecorationLayout {
+            MediumElevatedPoster(
+                modifier = Modifier.fillMaxSize(),
+                posterUrl = movieItem.posterUrl,
+                contentDescription = movieItem.title,
+                onClick = { onClick(movieItem) }
+            )
+            Rating(movieItem.voteAverage)
+        }
+        Spacer(Modifier.height(12.dp))
         Text(
-            modifier = Modifier.constrainAs(title) {
-                start.linkTo(parent.start)
-                top.linkTo(anchor = rating.bottom, margin = 12.dp)
-                end.linkTo(parent.end)
-            },
+            modifier = Modifier.align(Alignment.CenterHorizontally),
             text = buildAnnotatedString {
                 append(movieItem.title)
                 withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
@@ -204,6 +191,33 @@ private fun SpinnerItem(modifier: Modifier = Modifier) {
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator()
+    }
+}
+
+@Composable
+private fun ImageDecorationLayout(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+    val decorationPadding = LocalDensity.current.run { 12.dp.roundToPx() }
+
+    Layout(
+        modifier = modifier,
+        content = content
+    ) { measurables, constraints ->
+        check(measurables.size == 2) { "Expected 2 children, was ${measurables.size}" }
+        val placeables = measurables.map { measurable ->
+            measurable.measure(constraints)
+        }
+        val imagePlaceable = placeables[0]
+        val decorationPlaceable = placeables[1]
+        val width = minOf(constraints.maxWidth, imagePlaceable.width)
+        val placeablesHeight = imagePlaceable.height + (decorationPlaceable.height / 2)
+        val height = minOf(constraints.maxHeight, placeablesHeight)
+        layout(width, height) {
+            imagePlaceable.placeRelative(0, 0)
+            decorationPlaceable.placeRelative(
+                x = decorationPadding,
+                y = imagePlaceable.height - (decorationPlaceable.height / 2)
+            )
+        }
     }
 }
 
