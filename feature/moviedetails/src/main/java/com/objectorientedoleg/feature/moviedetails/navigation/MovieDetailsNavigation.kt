@@ -22,7 +22,7 @@ fun NavGraphBuilder.movieDetailsScreen(onBackClick: () -> Unit) {
     }
 }
 
-fun NavController.navigateToMovie(movieId: String) {
+fun NavController.navigateToMovieDetails(movieId: String) {
     navigate("movie_details_route/$movieId") {
         launchSingleTop = true
     }

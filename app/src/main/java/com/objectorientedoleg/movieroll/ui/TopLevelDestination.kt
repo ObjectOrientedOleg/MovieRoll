@@ -11,7 +11,7 @@ import com.objectorientedoleg.feature.genres.navigation.GenresRoute
 import com.objectorientedoleg.feature.home.navigation.HomeRoute
 import com.objectorientedoleg.movieroll.R
 
-enum class TopLevelDestinations(
+enum class TopLevelDestination(
     val route: String,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,

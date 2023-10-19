@@ -1,28 +1,32 @@
 package com.objectorientedoleg.movieroll.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.objectorientedoleg.core.data.sync.SyncManager
+import com.objectorientedoleg.core.ui.components.MovieRollLoadingIndicator
+import com.objectorientedoleg.core.ui.theme.MovieRollTheme
 import com.objectorientedoleg.feature.genres.navigation.genresGraph
 import com.objectorientedoleg.feature.home.navigation.HomeGraphRoute
 import com.objectorientedoleg.feature.home.navigation.homeGraph
 import com.objectorientedoleg.feature.moviedetails.navigation.movieDetailsScreen
-import com.objectorientedoleg.feature.moviedetails.navigation.navigateToMovie
-import com.objectorientedoleg.core.ui.theme.MovieRollTheme
 
 @Composable
-fun MovieRollApp() {
+fun MovieRollApp(syncManager: SyncManager) {
+    val appState = rememberMovieRollAppState(syncManager)
     val darkTheme = isSystemInDarkTheme()
 
     MovieRollTheme(darkTheme) {
@@ -36,15 +40,34 @@ fun MovieRollApp() {
             systemUiController.setNavigationBarColor(navigationBarColor, !darkTheme)
         }
 
-        val navController = rememberNavController()
+        val showBottomBar by appState.showBottomBar.collectAsStateWithLifecycle()
+        val isSyncing by appState.isSyncing.collectAsStateWithLifecycle()
 
         Scaffold(
-            bottomBar = { MovieRollBottomBar(navController) }
-        ) { innerPadding ->
-            MovieRollNavHost(
-                modifier = Modifier.padding(innerPadding),
-                navController = navController
-            )
+            bottomBar = {
+                if (showBottomBar) {
+                    MovieRollBottomBar(
+                        navController = appState.navController,
+                        onNavItemClick = appState::navigateToTopLevelDestination
+                    )
+                }
+            }
+        ) { padding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+            ) {
+                if (isSyncing) {
+                    MovieRollLoadingIndicator(Modifier.align(Alignment.Center))
+                } else {
+                    MovieRollNavHost(
+                        navController = appState.navController,
+                        onNavigateBack = appState::navigateBack,
+                        onNavigateToMovieDetails = appState::navigateToMovieDetails
+                    )
+                }
+            }
         }
     }
 }
@@ -52,24 +75,17 @@ fun MovieRollApp() {
 @Composable
 private fun MovieRollBottomBar(
     navController: NavHostController,
+    onNavItemClick: (TopLevelDestination) -> Unit,
     modifier: Modifier = Modifier
 ) {
     NavigationBar(modifier = modifier) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
-        TopLevelDestinations.values().forEach { destination ->
+        TopLevelDestination.values().forEach { destination ->
             val selected = currentDestination?.route == destination.route
             NavigationBarItem(
                 selected = selected,
-                onClick = {
-                    navController.navigate(destination.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
+                onClick = { onNavItemClick(destination) },
                 icon = {
                     Icon(
                         imageVector = if (selected) destination.selectedIcon else destination.unselectedIcon,
@@ -83,21 +99,26 @@ private fun MovieRollBottomBar(
 }
 
 @Composable
-private fun MovieRollNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
+private fun MovieRollNavHost(
+    navController: NavHostController,
+    onNavigateBack: () -> Unit,
+    onNavigateToMovieDetails: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     NavHost(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         navController = navController,
         startDestination = HomeGraphRoute
     ) {
-        homeGraph(onMovieClick = navController::navigateToMovie) {
-            movieDetailsScreen(onBackClick = navController::popBackStack)
+        homeGraph(onMovieClick = onNavigateToMovieDetails) {
+            movieDetailsScreen(onBackClick = onNavigateBack)
         }
         genresGraph(
             onSearchClick = {},
             onAccountClick = {},
-            onMovieClick = navController::navigateToMovie
+            onMovieClick = onNavigateToMovieDetails
         ) {
-            movieDetailsScreen(onBackClick = navController::popBackStack)
+            movieDetailsScreen(onBackClick = onNavigateBack)
         }
     }
 }
