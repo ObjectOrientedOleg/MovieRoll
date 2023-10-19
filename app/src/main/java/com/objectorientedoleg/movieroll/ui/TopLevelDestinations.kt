@@ -8,7 +8,7 @@ import androidx.compose.material.icons.outlined.Category
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.objectorientedoleg.feature.genres.navigation.GenresRoute
-import com.objectorientedoleg.home.navigation.HomeRoute
+import com.objectorientedoleg.feature.home.navigation.HomeRoute
 import com.objectorientedoleg.movieroll.R
 
 enum class TopLevelDestinations(

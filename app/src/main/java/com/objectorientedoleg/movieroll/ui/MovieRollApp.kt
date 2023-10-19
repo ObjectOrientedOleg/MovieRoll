@@ -15,11 +15,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.objectorientedoleg.feature.genres.navigation.genresGraph
-import com.objectorientedoleg.home.navigation.HomeGraphRoute
-import com.objectorientedoleg.home.navigation.homeGraph
-import com.objectorientedoleg.moviedetails.navigation.movieDetailsScreen
-import com.objectorientedoleg.moviedetails.navigation.navigateToMovie
-import com.objectorientedoleg.ui.theme.MovieRollTheme
+import com.objectorientedoleg.feature.home.navigation.HomeGraphRoute
+import com.objectorientedoleg.feature.home.navigation.homeGraph
+import com.objectorientedoleg.feature.moviedetails.navigation.movieDetailsScreen
+import com.objectorientedoleg.feature.moviedetails.navigation.navigateToMovie
+import com.objectorientedoleg.core.ui.theme.MovieRollTheme
 
 @Composable
 fun MovieRollApp() {

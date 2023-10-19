@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.work.Configuration
 import coil.ImageLoader
 import coil.ImageLoaderFactory
-import com.objectorientedoleg.data.sync.SyncManager
+import com.objectorientedoleg.core.data.sync.SyncManager
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 import javax.inject.Provider

@@ -18,10 +18,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.objectorientedoleg.domain.model.GenreItem
-import com.objectorientedoleg.domain.model.MovieItem
-import com.objectorientedoleg.ui.components.*
-import com.objectorientedoleg.ui.theme.ThemeDefaults
+import com.objectorientedoleg.core.domain.model.GenreItem
+import com.objectorientedoleg.core.domain.model.MovieItem
+import com.objectorientedoleg.core.ui.components.*
+import com.objectorientedoleg.core.ui.theme.ThemeDefaults
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable

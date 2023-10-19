@@ -1,6 +1,6 @@
 package com.objectorientedoleg.feature.genres
 
-import com.objectorientedoleg.domain.model.GenreItem
+import com.objectorientedoleg.core.domain.model.GenreItem
 import kotlinx.collections.immutable.ImmutableList
 
 internal sealed interface GenresUiState {

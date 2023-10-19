@@ -1,9 +1,9 @@
 package com.objectorientedoleg.data.repository
 
 import com.objectorientedoleg.data.type.ImageType
-import com.objectorientedoleg.database.dao.ImageConfigurationDao
-import com.objectorientedoleg.database.model.ImageConfigurationEntity
-import com.objectorientedoleg.network.MovieRollNetworkDataSource
+import com.objectorientedoleg.core.database.dao.ImageConfigurationDao
+import com.objectorientedoleg.core.database.model.ImageConfigurationEntity
+import com.objectorientedoleg.core.network.MovieRollNetworkDataSource
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
