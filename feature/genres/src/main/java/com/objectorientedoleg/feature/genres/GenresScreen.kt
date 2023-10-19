@@ -213,16 +213,9 @@ private fun GenreTab(
 @Composable
 private fun GenreShimmerList(modifier: Modifier = Modifier) {
     LazyVerticalGrid(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(top = 16.dp),
+        modifier = modifier.fillMaxSize(),
         columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(
-            start = ThemeDefaults.screenEdgePadding,
-            top = 0.dp,
-            end = ThemeDefaults.screenEdgePadding,
-            bottom = ThemeDefaults.screenEdgePadding
-        ),
+        contentPadding = PaddingValues(ThemeDefaults.screenEdgePadding),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         userScrollEnabled = false
@@ -239,17 +232,10 @@ private fun GenreMovieList(
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(top = 16.dp),
+        modifier = modifier.fillMaxSize(),
         state = state,
         columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(
-            start = ThemeDefaults.screenEdgePadding,
-            top = 0.dp,
-            end = ThemeDefaults.screenEdgePadding,
-            bottom = ThemeDefaults.screenEdgePadding
-        ),
+        contentPadding = PaddingValues(ThemeDefaults.screenEdgePadding),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
