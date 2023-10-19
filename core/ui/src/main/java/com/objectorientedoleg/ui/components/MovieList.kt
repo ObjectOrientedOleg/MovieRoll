@@ -28,7 +28,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.objectorientedoleg.domain.model.MovieItem
 
-fun LazyListScope.movieExtraLargeItems(
+fun LazyListScope.extraLargeMovieList(
     movieItems: LazyPagingItems<MovieItem>,
     onItemClick: (MovieItem) -> Unit,
     itemModifier: Modifier = Modifier
@@ -111,7 +111,7 @@ private fun MovieExtraLargeItem(
     }
 }
 
-fun LazyGridScope.movieMediumItems(
+fun LazyGridScope.mediumMovieGrid(
     movieItems: LazyPagingItems<MovieItem>,
     onItemClick: (MovieItem) -> Unit,
     itemModifier: Modifier = Modifier
@@ -130,9 +130,7 @@ fun LazyGridScope.movieMediumItems(
     }
     movieItems.run {
         when {
-            loadState.refresh is LoadState.Loading -> repeat(6) {
-                item { MediumShimmerPoster(modifier = itemModifier) }
-            }
+            loadState.refresh is LoadState.Loading -> mediumShimmerGrid(itemModifier)
 
             loadState.append is LoadState.Loading -> item(
                 span = { GridItemSpan(maxLineSpan) }
@@ -140,6 +138,12 @@ fun LazyGridScope.movieMediumItems(
                 SpinnerItem()
             }
         }
+    }
+}
+
+fun LazyGridScope.mediumShimmerGrid(itemModifier: Modifier = Modifier) {
+    repeat(6) {
+        item { MediumShimmerPoster(modifier = itemModifier) }
     }
 }
 

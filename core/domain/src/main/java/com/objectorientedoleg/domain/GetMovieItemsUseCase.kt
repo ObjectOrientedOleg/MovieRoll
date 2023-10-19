@@ -1,5 +1,6 @@
 package com.objectorientedoleg.domain
 
+import androidx.paging.PagingData
 import androidx.paging.map
 import com.objectorientedoleg.data.repository.ImageParams
 import com.objectorientedoleg.data.repository.ImageRepository
@@ -7,17 +8,17 @@ import com.objectorientedoleg.data.repository.MovieQuery
 import com.objectorientedoleg.data.repository.MoviesRepository
 import com.objectorientedoleg.data.type.ImageType
 import com.objectorientedoleg.domain.model.MovieItem
-import com.objectorientedoleg.domain.model.MoviesItem
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.toLocalDate
 import javax.inject.Inject
 
-class GetMoviesItemUseCase @Inject constructor(
+class GetMovieItemsUseCase @Inject constructor(
     private val moviesRepository: MoviesRepository,
     private val imageRepository: ImageRepository
 ) {
 
-    operator fun invoke(movieQuery: MovieQuery): MoviesItem = MoviesItem {
+    operator fun invoke(movieQuery: MovieQuery): Flow<PagingData<MovieItem>> =
         moviesRepository.getMovies(movieQuery).map { pagingData ->
             pagingData.map { movie ->
                 val image = movie.posterPath?.let { path ->
@@ -36,5 +37,4 @@ class GetMoviesItemUseCase @Inject constructor(
                 )
             }
         }
-    }
 }

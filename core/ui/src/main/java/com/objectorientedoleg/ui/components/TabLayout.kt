@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.ScrollableTabRow
@@ -26,12 +27,12 @@ fun TabLayout(
     tabCount: Int,
     tabTitle: (index: Int) -> String,
     modifier: Modifier = Modifier,
+    pagerState: PagerState = rememberPagerState { tabCount },
     edgePadding: Dp = ThemeDefaults.screenEdgePadding,
     tabKey: ((index: Int) -> Any)? = null,
     tabContent: @Composable (index: Int) -> Unit
 ) {
     Column(modifier = modifier) {
-        val pagerState = rememberPagerState { tabCount }
         val scope = rememberCoroutineScope()
 
         ScrollableTabRow(
@@ -84,6 +85,7 @@ private fun TabItem(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Preview(showBackground = true)
 @Composable
 fun PreviewTabLayout(@PreviewParameter(TabsPreviewParameterProvider::class) tabs: List<String>) {

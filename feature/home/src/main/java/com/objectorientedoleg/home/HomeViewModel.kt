@@ -7,27 +7,22 @@ import com.objectorientedoleg.data.repository.GenreRepository
 import com.objectorientedoleg.data.repository.MovieQuery
 import com.objectorientedoleg.data.sync.SyncManager
 import com.objectorientedoleg.data.type.MovieType
-import com.objectorientedoleg.domain.GetMoviesItemUseCase
+import com.objectorientedoleg.domain.GetMovieItemsUseCase
 import com.objectorientedoleg.domain.model.GenreItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     syncManager: SyncManager,
     genreRepository: GenreRepository,
-    getDiscoverMovies: GetMoviesItemUseCase
+    getMovieItems: GetMovieItemsUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<HomeUiState> = combine(
         syncManager.isSyncing,
-        genreRepository.getDiscoverGenres(getDiscoverMovies)
+        genreRepository.getDiscoverGenres(getMovieItems)
     ) { isSyncing, discoverGenresUiState ->
         HomeUiState(isSyncing = isSyncing, discoverGenresUiState = discoverGenresUiState)
     }
@@ -42,7 +37,7 @@ class HomeViewModel @Inject constructor(
 }
 
 private fun GenreRepository.getDiscoverGenres(
-    getDiscoverMovies: GetMoviesItemUseCase
+    getMovieItems: GetMovieItemsUseCase
 ) = getGenres().map { genres ->
     if (genres.isEmpty()) {
         return@map DiscoverGenresUiState.NotLoaded
@@ -51,7 +46,7 @@ private fun GenreRepository.getDiscoverGenres(
         GenreItem.SingleGenre(
             id = genre.id,
             name = genre.name,
-            movies = getDiscoverMovies(genre.toMovieQuery())
+            init = { getMovieItems(genre.toMovieQuery()) }
         )
     }
     genreItems.apply {
@@ -60,7 +55,7 @@ private fun GenreRepository.getDiscoverGenres(
             GenreItem.SingleGenre(
                 id = movieType.name,
                 name = movieType.displayName(),
-                movies = getDiscoverMovies(movieType.toMovieQuery())
+                init = { getMovieItems(movieType.toMovieQuery()) }
             )
         }
         add(

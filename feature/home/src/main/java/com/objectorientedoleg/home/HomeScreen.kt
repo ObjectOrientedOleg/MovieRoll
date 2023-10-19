@@ -1,6 +1,7 @@
 package com.objectorientedoleg.home
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -22,16 +23,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.objectorientedoleg.domain.model.GenreItem
-import com.objectorientedoleg.domain.model.MoviesItem
+import com.objectorientedoleg.domain.model.MovieItem
 import com.objectorientedoleg.feature.home.R
 import com.objectorientedoleg.ui.components.MovieRollLoadingIndicator
 import com.objectorientedoleg.ui.components.TabLayout
-import com.objectorientedoleg.ui.components.movieExtraLargeItems
-import com.objectorientedoleg.ui.components.movieMediumItems
+import com.objectorientedoleg.ui.components.extraLargeMovieList
+import com.objectorientedoleg.ui.components.mediumMovieGrid
 import com.objectorientedoleg.ui.theme.MovieRollTheme
 import com.objectorientedoleg.ui.theme.ThemeDefaults
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 internal fun HomeRoute(
@@ -130,6 +133,7 @@ private fun HomeLayout(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HomeTabLayout(
     genreItems: List<GenreItem>,
@@ -195,11 +199,11 @@ private fun CustomGenreRow(
 
 @Composable
 private fun CustomGenreMovies(
-    moviesItem: MoviesItem,
+    movieItems: Flow<PagingData<MovieItem>>,
     onMovieClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val lazyPagingItems = moviesItem.paging.collectAsLazyPagingItems()
+    val lazyPagingItems = movieItems.collectAsLazyPagingItems()
 
     LazyRow(
         modifier = modifier.fillMaxWidth(),
@@ -211,7 +215,7 @@ private fun CustomGenreMovies(
         ),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        movieExtraLargeItems(
+        extraLargeMovieList(
             itemModifier = Modifier.width(250.dp),
             movieItems = lazyPagingItems,
             onItemClick = { movieItem -> onMovieClick(movieItem.id) }
@@ -221,11 +225,11 @@ private fun CustomGenreMovies(
 
 @Composable
 private fun SingleGenreTab(
-    moviesItem: MoviesItem,
+    movieItems: Flow<PagingData<MovieItem>>,
     onMovieClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val lazyPagingItems = moviesItem.paging.collectAsLazyPagingItems()
+    val lazyPagingItems = movieItems.collectAsLazyPagingItems()
 
     LazyVerticalGrid(
         modifier = modifier.fillMaxSize(),
@@ -239,7 +243,7 @@ private fun SingleGenreTab(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        movieMediumItems(
+        mediumMovieGrid(
             itemModifier = Modifier.fillMaxWidth(),
             movieItems = lazyPagingItems,
             onItemClick = { movieItem -> onMovieClick(movieItem.id) }
