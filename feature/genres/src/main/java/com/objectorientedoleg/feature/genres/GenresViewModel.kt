@@ -7,7 +7,6 @@ import com.objectorientedoleg.core.common.immutable.mapToImmutableList
 import com.objectorientedoleg.core.data.model.Genre
 import com.objectorientedoleg.core.data.repository.GenreRepository
 import com.objectorientedoleg.core.data.repository.MovieQuery
-import com.objectorientedoleg.core.data.sync.SyncManager
 import com.objectorientedoleg.core.domain.GetMovieItemsUseCase
 import com.objectorientedoleg.core.domain.model.GenreItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,17 +15,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class GenresViewModel @Inject constructor(
-    syncManager: SyncManager,
     genreRepository: GenreRepository,
     getMovieItems: GetMovieItemsUseCase
 ) : ViewModel() {
-
-    val isSyncing: StateFlow<Boolean> = syncManager.isSyncing
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = false
-        )
 
     val uiState: StateFlow<GenresUiState> = genreRepository.getGenres()
         .map { genres ->

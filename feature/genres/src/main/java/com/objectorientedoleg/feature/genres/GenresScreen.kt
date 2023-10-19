@@ -32,12 +32,10 @@ internal fun GenresRoute(
     modifier: Modifier = Modifier,
     viewModel: GenresViewModel = hiltViewModel()
 ) {
-    val isSyncing by viewModel.isSyncing.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     GenresScreen(
         modifier = modifier,
-        isSyncing = isSyncing,
         uiState = uiState,
         onSearchClick = onSearchClick,
         onAccountClick = onAccountClick,
@@ -51,7 +49,6 @@ internal fun GenresRoute(
 
 @Composable
 private fun GenresScreen(
-    isSyncing: Boolean,
     uiState: GenresUiState,
     onSearchClick: () -> Unit,
     onAccountClick: () -> Unit,
@@ -65,7 +62,8 @@ private fun GenresScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            GenresTopBar(
+            MovieRollTopBar(
+                title = stringResource(R.string.genres),
                 onSearchClick = onSearchClick,
                 onAccountClick = onAccountClick
             )
@@ -76,57 +74,20 @@ private fun GenresScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            if (isSyncing) {
-                MovieRollLoadingIndicator(Modifier.align(Alignment.Center))
-            } else {
-                GenresContent(
-                    uiState = uiState,
+            when (uiState) {
+                is GenresUiState.Loaded -> GenresLoadedLayout(
+                    genreItems = uiState.genres,
                     onMovieClick = onMovieClick,
                     onRestoreTabState = onRestoreTabState,
                     onSaveTabState = onSaveTabState,
                     onRestoreScrollState = onRestoreScrollState,
                     onSaveScrollState = onSaveScrollState
                 )
+
+                is GenresUiState.Loading -> MovieRollLoadingIndicator(Modifier.align(Alignment.Center))
+                is GenresUiState.NotLoaded -> {}
             }
         }
-    }
-}
-
-@Composable
-private fun GenresTopBar(
-    onSearchClick: () -> Unit,
-    onAccountClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    MovieRollTopAppBar(
-        modifier = modifier,
-        title = stringResource(R.string.genres),
-        onSearchClick = onSearchClick,
-        onAccountClick = onAccountClick
-    )
-}
-
-@Composable
-private fun BoxScope.GenresContent(
-    uiState: GenresUiState,
-    onMovieClick: (String) -> Unit,
-    onRestoreTabState: () -> Int,
-    onSaveTabState: (Int) -> Unit,
-    onRestoreScrollState: (String) -> ScrollState?,
-    onSaveScrollState: (String, ScrollState) -> Unit
-) {
-    when (uiState) {
-        is GenresUiState.Loaded -> GenresLoadedLayout(
-            genreItems = uiState.genres,
-            onMovieClick = onMovieClick,
-            onRestoreTabState = onRestoreTabState,
-            onSaveTabState = onSaveTabState,
-            onRestoreScrollState = onRestoreScrollState,
-            onSaveScrollState = onSaveScrollState
-        )
-
-        is GenresUiState.Loading -> MovieRollLoadingIndicator(Modifier.align(Alignment.Center))
-        is GenresUiState.NotLoaded -> {}
     }
 }
 
@@ -153,9 +114,7 @@ private fun GenresLoadedLayout(
     }
 
     TabLayout(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(top = 16.dp),
+        modifier = modifier.fillMaxSize(),
         pagerState = pagerState,
         tabCount = genreItems.size,
         tabTitle = { index -> genreItems[index].name },

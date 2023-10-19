@@ -12,7 +12,7 @@ import com.objectorientedoleg.core.ui.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovieRollTopAppBar(
+fun MovieRollTopBar(
     title: String,
     onSearchClick: () -> Unit,
     onAccountClick: () -> Unit,
