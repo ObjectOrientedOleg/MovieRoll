@@ -98,7 +98,7 @@ data class NetworkMovieDetails(
             data class ReleaseDate(
                 @SerialName("certification") val certification: String,
                 @SerialName("iso_639_1") val languageCode: String,
-                @SerialName("note") val note: String,
+                @SerialName("note") val note: String?,
                 @SerialName("release_date") val releaseDate: String,
                 @SerialName("type") val type: Int
             )
