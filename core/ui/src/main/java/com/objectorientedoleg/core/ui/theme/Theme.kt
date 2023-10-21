@@ -74,8 +74,7 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun MovieRollTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -88,9 +87,19 @@ fun MovieRollTheme(
         else -> LightColorScheme
     }
     val loadingIndicatorResource = LoadingIndicatorResource.fromTheme(darkTheme)
+    val gradientColors = if (dynamicColor) {
+        GradientColors(container = colorScheme.surface)
+    } else {
+        GradientColors(
+            top = colorScheme.inverseOnSurface,
+            bottom = colorScheme.primaryContainer,
+            container = colorScheme.surface,
+        )
+    }
 
     CompositionLocalProvider(
-        LocalLoadingIndicatorResource provides loadingIndicatorResource
+        LocalLoadingIndicatorResource provides loadingIndicatorResource,
+        LocalGradientColors provides gradientColors
     ) {
         MaterialTheme(
             colorScheme = colorScheme,

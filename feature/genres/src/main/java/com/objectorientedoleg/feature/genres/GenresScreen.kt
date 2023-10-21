@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,21 +58,13 @@ private fun GenresScreen(
     onSaveScrollState: (String, ScrollState) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Scaffold(
-        modifier = modifier,
-        topBar = {
-            MovieRollTopBar(
-                title = stringResource(R.string.genres),
-                onSearchClick = onSearchClick,
-                onAccountClick = onAccountClick
-            )
-        }
-    ) { padding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-        ) {
+    Column(modifier = modifier.fillMaxSize()) {
+        MovieRollTopBar(
+            title = stringResource(R.string.genres),
+            onSearchClick = onSearchClick,
+            onAccountClick = onAccountClick
+        )
+        Box(modifier = Modifier.fillMaxSize()) {
             when (uiState) {
                 is GenresUiState.Loaded -> GenresLoadedLayout(
                     genreItems = uiState.genres,

@@ -25,7 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.objectorientedoleg.core.domain.model.ImageUrl
 import com.objectorientedoleg.core.domain.model.MovieDetailsItem
-import com.objectorientedoleg.feature.moviedetails.R
 import com.objectorientedoleg.core.ui.components.ExtraLargePoster
 import com.objectorientedoleg.core.ui.components.MovieRollLoadingIndicator
 import com.objectorientedoleg.core.ui.theme.ThemeDefaults
@@ -65,11 +64,16 @@ private fun MovieDetailsScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            MovieDetailsContent(
-                uiState = uiState,
-                onBookmarkClick = onBookmarkClick,
-                onGenreClick = onGenreClick
-            )
+            when (uiState) {
+                is MovieDetailsUiState.Loaded -> MovieDetailsLoadedLayout(
+                    movieDetailsItem = uiState.movieDetails,
+                    onBookmarkClick = onBookmarkClick,
+                    onGenreClick = onGenreClick
+                )
+
+                is MovieDetailsUiState.Loading -> MovieRollLoadingIndicator(Modifier.align(Alignment.Center))
+                is MovieDetailsUiState.NotLoaded -> {}
+            }
         }
     }
 }
@@ -100,24 +104,6 @@ private fun MovieDetailsTopBar(
             }
         }
     )
-}
-
-@Composable
-private fun BoxScope.MovieDetailsContent(
-    uiState: MovieDetailsUiState,
-    onBookmarkClick: (String) -> Unit,
-    onGenreClick: (String) -> Unit
-) {
-    when (uiState) {
-        is MovieDetailsUiState.Loaded -> MovieDetailsLoadedLayout(
-            movieDetailsItem = uiState.movieDetails,
-            onBookmarkClick = onBookmarkClick,
-            onGenreClick = onGenreClick
-        )
-
-        is MovieDetailsUiState.Loading -> MovieRollLoadingIndicator(Modifier.align(Alignment.Center))
-        is MovieDetailsUiState.NotLoaded -> {}
-    }
 }
 
 @Composable
@@ -309,6 +295,7 @@ private fun MovieDetailsAbout(overview: String, modifier: Modifier = Modifier) {
     ) {
         Text(
             text = stringResource(R.string.about),
+            fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleMedium
         )
         Spacer(Modifier.height(8.dp))
@@ -328,6 +315,7 @@ private fun MovieDetailsReleaseDate(releaseDate: String, modifier: Modifier = Mo
     ) {
         Text(
             text = stringResource(R.string.release_date),
+            fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleMedium
         )
         Spacer(Modifier.height(8.dp))
@@ -351,6 +339,7 @@ private fun MovieDetailsGenres(
     ) {
         Text(
             text = stringResource(R.string.genres),
+            fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleMedium
         )
         Spacer(Modifier.height(8.dp))
@@ -372,6 +361,7 @@ private fun MovieDetailsCredits(
         Text(
             modifier = Modifier.padding(horizontal = ThemeDefaults.screenEdgePadding),
             text = title,
+            fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleMedium
         )
         Spacer(Modifier.height(8.dp))
@@ -404,6 +394,7 @@ private fun MovieDetailsBackdrops(
     ) {
         Text(
             text = stringResource(R.string.images),
+            fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleMedium
         )
         Spacer(Modifier.height(8.dp))

@@ -1,14 +1,13 @@
 package com.objectorientedoleg.feature.home
 
-import com.objectorientedoleg.core.domain.model.GenreItem
+import com.objectorientedoleg.core.domain.model.MoviesItem
+import kotlinx.collections.immutable.ImmutableList
 
-data class HomeUiState(val isSyncing: Boolean, val discoverGenresUiState: DiscoverGenresUiState)
+internal sealed interface HomeUiState {
 
-sealed interface DiscoverGenresUiState {
+    data object Loading : HomeUiState
 
-    object Loading : DiscoverGenresUiState
+    data object NotLoaded : HomeUiState
 
-    object NotLoaded : DiscoverGenresUiState
-
-    data class Loaded(val genres: List<GenreItem>) : DiscoverGenresUiState
+    data class Loaded(val movies: ImmutableList<MoviesItem>) : HomeUiState
 }

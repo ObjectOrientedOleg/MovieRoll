@@ -2,76 +2,39 @@ package com.objectorientedoleg.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.objectorientedoleg.core.data.model.Genre
-import com.objectorientedoleg.core.data.repository.GenreRepository
+import androidx.paging.cachedIn
+import com.objectorientedoleg.core.common.immutable.mapToImmutableList
 import com.objectorientedoleg.core.data.repository.MovieQuery
-import com.objectorientedoleg.core.data.sync.SyncManager
 import com.objectorientedoleg.core.data.type.MovieType
 import com.objectorientedoleg.core.domain.GetMovieItemsUseCase
-import com.objectorientedoleg.core.domain.model.GenreItem
+import com.objectorientedoleg.core.domain.model.MoviesItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    syncManager: SyncManager,
-    genreRepository: GenreRepository,
+internal class HomeViewModel @Inject constructor(
     getMovieItems: GetMovieItemsUseCase
 ) : ViewModel() {
 
-    val uiState: StateFlow<HomeUiState> = combine(
-        syncManager.isSyncing,
-        genreRepository.getDiscoverGenres(getMovieItems)
-    ) { isSyncing, discoverGenresUiState ->
-        HomeUiState(isSyncing = isSyncing, discoverGenresUiState = discoverGenresUiState)
-    }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = HomeUiState(
-                isSyncing = false,
-                discoverGenresUiState = DiscoverGenresUiState.NotLoaded
-            )
-        )
-}
-
-private fun GenreRepository.getDiscoverGenres(
-    getMovieItems: GetMovieItemsUseCase
-) = getGenres().map { genres ->
-    if (genres.isEmpty()) {
-        return@map DiscoverGenresUiState.NotLoaded
-    }
-    val genreItems = genres.mapTo(mutableListOf<GenreItem>()) { genre ->
-        GenreItem.SingleGenre(
-            id = genre.id,
-            name = genre.name,
-            init = { getMovieItems(genre.toMovieQuery()) }
-        )
-    }
-    genreItems.apply {
-        sortBy { discoverGenre -> discoverGenre.name }
-        val singleGenres = MovieType.values().map { movieType ->
-            GenreItem.SingleGenre(
-                id = movieType.name,
+    val uiState: StateFlow<HomeUiState> = flow<HomeUiState> {
+        val movieTypes = MovieType.values().asList()
+        val movies = movieTypes.mapToImmutableList { movieType ->
+            val movieQuery = movieType.toMovieQuery()
+            MoviesItem(
                 name = movieType.displayName(),
-                init = { getMovieItems(movieType.toMovieQuery()) }
+                movies = getMovieItems(movieQuery).cachedIn(viewModelScope)
             )
         }
-        add(
-            0,
-            GenreItem.CombinedGenres(
-                id = "Recommended",
-                name = "Recommended",
-                genres = singleGenres
-            )
-        )
+        emit(HomeUiState.Loaded(movies))
     }
-    DiscoverGenresUiState.Loaded(genreItems)
+        .onStart { emit(HomeUiState.Loading) }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = HomeUiState.NotLoaded
+        )
 }
-    .onStart { emit(DiscoverGenresUiState.Loading) }
-
-private fun Genre.toMovieQuery() = MovieQuery.ByGenreId(id = id, name = name)
 
 private fun MovieType.toMovieQuery() = MovieQuery.ByType(this)
 

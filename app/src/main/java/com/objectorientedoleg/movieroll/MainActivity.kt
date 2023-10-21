@@ -3,7 +3,10 @@ package com.objectorientedoleg.movieroll
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
 import com.objectorientedoleg.core.data.sync.SyncManager
+import com.objectorientedoleg.core.ui.theme.MovieRollTheme
 import com.objectorientedoleg.movieroll.ui.MovieRollApp
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -16,8 +19,13 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
-            MovieRollApp(syncManager)
+            val darkTheme = isSystemInDarkTheme()
+
+            MovieRollTheme(darkTheme) {
+                MovieRollApp(syncManager)
+            }
         }
     }
 }

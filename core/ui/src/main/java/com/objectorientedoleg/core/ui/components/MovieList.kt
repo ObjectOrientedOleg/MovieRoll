@@ -15,16 +15,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.objectorientedoleg.core.domain.model.MovieItem
@@ -49,14 +45,18 @@ fun LazyListScope.extraLargeMovieList(
     }
     movieItems.run {
         when {
-            loadState.refresh is LoadState.Loading -> repeat(2) {
-                item { ExtraLargeShimmerPoster(modifier = itemModifier) }
-            }
+            loadState.refresh is LoadState.Loading -> extraLargeShimmerItems(itemModifier)
 
             loadState.append is LoadState.Loading -> item {
                 SpinnerItem()
             }
         }
+    }
+}
+
+fun LazyListScope.extraLargeShimmerItems(itemModifier: Modifier = Modifier) {
+    repeat(2) {
+        item { ExtraLargeShimmerPoster(modifier = itemModifier) }
     }
 }
 
@@ -67,35 +67,21 @@ private fun MovieExtraLargeItem(
     onClick: (MovieItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    ConstraintLayout(modifier = modifier) {
-        val (poster, rating, title) = createRefs()
-
-        ExtraLargeElevatedPoster(
-            modifier = Modifier.constrainAs(poster) {
-                start.linkTo(parent.start)
-                top.linkTo(parent.top)
-                end.linkTo(parent.end)
-                width = Dimension.fillToConstraints
-            },
-            posterUrl = movieItem.posterUrl,
-            contentDescription = movieItem.title,
-            sharpCorner = isFirstItem,
-            onClick = { onClick(movieItem) }
-        )
-        Rating(
-            modifier = Modifier.constrainAs(rating) {
-                start.linkTo(anchor = poster.start, margin = 28.dp)
-                centerAround(poster.bottom)
-            },
-            rating = movieItem.voteAverage,
-            largeText = true
-        )
+    ImageTextLayout(modifier = modifier) {
+        ImageDecorationLayout {
+            ExtraLargeElevatedPoster(
+                modifier = Modifier.fillMaxSize(),
+                posterUrl = movieItem.posterUrl,
+                contentDescription = movieItem.title,
+                sharpCorner = isFirstItem,
+                onClick = { onClick(movieItem) }
+            )
+            Rating(
+                rating = movieItem.voteAverage,
+                largeText = true
+            )
+        }
         Text(
-            modifier = Modifier.constrainAs(title) {
-                start.linkTo(parent.start)
-                top.linkTo(anchor = rating.bottom, margin = 12.dp)
-                end.linkTo(parent.end)
-            },
             text = buildAnnotatedString {
                 append(movieItem.title)
                 withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
@@ -191,33 +177,6 @@ private fun SpinnerItem(modifier: Modifier = Modifier) {
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator()
-    }
-}
-
-@Composable
-private fun ImageDecorationLayout(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
-    val decorationPadding = LocalDensity.current.run { 12.dp.roundToPx() }
-
-    Layout(
-        modifier = modifier,
-        content = content
-    ) { measurables, constraints ->
-        check(measurables.size == 2) { "Expected 2 children, was ${measurables.size}" }
-        val placeables = measurables.map { measurable ->
-            measurable.measure(constraints)
-        }
-        val imagePlaceable = placeables[0]
-        val decorationPlaceable = placeables[1]
-        val width = minOf(constraints.maxWidth, imagePlaceable.width)
-        val placeablesHeight = imagePlaceable.height + (decorationPlaceable.height / 2)
-        val height = minOf(constraints.maxHeight, placeablesHeight)
-        layout(width, height) {
-            imagePlaceable.placeRelative(0, 0)
-            decorationPlaceable.placeRelative(
-                x = decorationPadding,
-                y = imagePlaceable.height - (decorationPlaceable.height / 2)
-            )
-        }
     }
 }
 

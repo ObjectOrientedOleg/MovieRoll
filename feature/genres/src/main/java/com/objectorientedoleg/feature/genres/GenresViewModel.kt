@@ -27,7 +27,7 @@ internal class GenresViewModel @Inject constructor(
             val sortedGenres = genres.sortedBy { genre -> genre.name }
             val genreItems = sortedGenres.mapToImmutableList { genre ->
                 val movieQuery = genre.toMovieQuery()
-                GenreItem.SingleGenre(
+                GenreItem(
                     id = genre.id,
                     name = genre.name
                 ) {
