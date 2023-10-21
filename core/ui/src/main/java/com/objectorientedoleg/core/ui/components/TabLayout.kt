@@ -63,8 +63,7 @@ fun TabLayout(
         HorizontalPager(
             modifier = Modifier.fillMaxSize(),
             state = pagerState,
-            key = tabKey,
-            userScrollEnabled = false
+            key = tabKey
         ) { index ->
             tabContent(index)
         }
