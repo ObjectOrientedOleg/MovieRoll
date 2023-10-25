@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -23,6 +24,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.placeholder
+import com.google.accompanist.placeholder.shimmer
 import com.objectorientedoleg.core.domain.model.MovieItem
 
 fun LazyListScope.extraLargeMovieList(
@@ -56,7 +60,7 @@ fun LazyListScope.extraLargeMovieList(
 
 fun LazyListScope.extraLargeShimmerItems(itemModifier: Modifier = Modifier) {
     repeat(2) {
-        item { ExtraLargeShimmerPoster(modifier = itemModifier) }
+        item { MovieExtraLargeShimmerItem(modifier = itemModifier) }
     }
 }
 
@@ -98,6 +102,14 @@ private fun MovieExtraLargeItem(
     }
 }
 
+@Composable
+private fun MovieExtraLargeShimmerItem(modifier: Modifier = Modifier) {
+    ImageTextLayout(modifier = modifier) {
+        ExtraLargeShimmerPoster(Modifier.fillMaxSize())
+        TextShimmer()
+    }
+}
+
 fun LazyGridScope.mediumMovieGrid(
     movieItems: LazyPagingItems<MovieItem>,
     onItemClick: (MovieItem) -> Unit,
@@ -130,7 +142,7 @@ fun LazyGridScope.mediumMovieGrid(
 
 fun LazyGridScope.mediumShimmerGrid(itemModifier: Modifier = Modifier) {
     repeat(6) {
-        item { MediumShimmerPoster(modifier = itemModifier) }
+        item { MovieMediumShimmerItem(modifier = itemModifier) }
     }
 }
 
@@ -168,6 +180,30 @@ private fun MovieMediumItem(
             maxLines = 2
         )
     }
+}
+
+@Composable
+private fun MovieMediumShimmerItem(modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
+        MediumShimmerPoster(Modifier.fillMaxSize())
+        Spacer(Modifier.height(12.dp))
+        TextShimmer()
+    }
+}
+
+@Composable
+private fun TextShimmer(modifier: Modifier = Modifier) {
+    Box(
+        modifier
+            .fillMaxWidth()
+            .height(MaterialTheme.typography.titleSmall.fontSize.value.dp)
+            .padding(horizontal = 24.dp)
+            .placeholder(
+                visible = true,
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                highlight = PlaceholderHighlight.shimmer(Color.White)
+            )
+    )
 }
 
 @Composable
