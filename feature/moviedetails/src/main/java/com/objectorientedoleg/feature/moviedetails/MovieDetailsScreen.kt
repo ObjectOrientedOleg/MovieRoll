@@ -368,14 +368,12 @@ private fun MovieDetailsCredits(
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(125.dp),
+                .height(175.dp),
             contentPadding = PaddingValues(horizontal = ThemeDefaults.screenEdgePadding),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             creditList(
-                itemModifier = Modifier
-                    .widthIn(max = 125.dp)
-                    .fillMaxHeight(),
+                itemModifier = Modifier.fillMaxHeight(),
                 creditItems = creditItems
             )
         }
