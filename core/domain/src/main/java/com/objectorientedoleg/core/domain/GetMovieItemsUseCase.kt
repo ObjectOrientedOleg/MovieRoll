@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.toLocalDate
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 class GetMovieItemsUseCase @Inject constructor(
     private val moviesRepository: MoviesRepository,
@@ -33,7 +34,7 @@ class GetMovieItemsUseCase @Inject constructor(
                     posterUrl = image?.url,
                     releaseYear = releaseYear,
                     title = movie.title,
-                    voteAverage = movie.voteAverage
+                    voteAverage = movie.voteAverage.roundToInt()
                 )
             }
         }

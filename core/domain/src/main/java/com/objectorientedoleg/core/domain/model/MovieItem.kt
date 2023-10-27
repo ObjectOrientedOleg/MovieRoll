@@ -5,5 +5,5 @@ data class MovieItem(
     val posterUrl: ImageUrl?,
     val releaseYear: Int,
     val title: String,
-    val voteAverage: Double
+    val voteAverage: Int
 )

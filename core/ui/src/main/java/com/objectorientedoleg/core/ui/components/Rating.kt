@@ -1,111 +1,183 @@
 package com.objectorientedoleg.core.ui.components
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.objectorientedoleg.core.ui.R
-import kotlin.math.roundToInt
+import com.objectorientedoleg.core.ui.theme.*
 
 @Composable
 fun Rating(
-    rating: Double,
+    rating: Int,
     modifier: Modifier = Modifier,
     largeText: Boolean = false
 ) {
-    val strokeWidth = 2.dp
-    val strokeSize = LocalDensity.current.run { strokeWidth.roundToPx() }
     val padding = LocalDensity.current.run { 4.dp.roundToPx() }
 
     SubcomposeLayout(
         modifier = modifier.background(
-            color = MaterialTheme.colorScheme.tertiaryContainer,
+            color = MaterialTheme.colorScheme.background,
             shape = CircleShape
         )
     ) { constraints ->
+        val indicatorMeasurables = subcompose("indicator") {
+            RatingIndicator(rating)
+        }
+        val indicatorPlaceables = indicatorMeasurables.map { measurable ->
+            measurable.measure(
+                constraints.copy(
+                    minWidth = 0,
+                    maxWidth = constraints.maxWidth - (padding * 2),
+                    minHeight = 0,
+                    maxHeight = constraints.maxHeight - (padding * 2)
+                )
+            )
+        }
+
         val textMeasurables = subcompose("text") {
-            Text(
-                text = buildAnnotatedString {
-                    append(rating.roundToInt().toString())
-                    withStyle(
-                        SpanStyle(
-                            fontSize = 8.sp,
-                            baselineShift = BaselineShift.Superscript
-                        )
-                    ) {
-                        append(stringResource(R.string.rating_out_of_ten))
-                    }
-                },
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                style = if (largeText) {
-                    MaterialTheme.typography.bodyLarge
-                } else {
-                    MaterialTheme.typography.bodySmall
-                }
+            RatingText(
+                rating = rating.toString(),
+                largeText = largeText
             )
         }
         val textPlaceables = textMeasurables.map { measurable ->
             measurable.measure(constraints)
         }
-        val textSize = textPlaceables.fold(IntSize.Zero) { size, placeable ->
-            IntSize(
-                width = maxOf(size.width, placeable.width),
-                height = maxOf(size.height, placeable.height)
-            )
-        }
 
-        val progressMeasurables = subcompose("progress") {
-            CircularProgressIndicator(
-                progress = (rating / 10).toFloat(),
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                strokeWidth = strokeWidth
-            )
-        }
-        val progressSize = textSize.max() + (strokeSize * 2) + (padding * 2)
-        val progressPlaceables = progressMeasurables.map { measurable ->
-            measurable.measure(Constraints.fixed(progressSize, progressSize))
-        }
-
-        val layoutSize = progressSize + (padding * 2)
-        layout(layoutSize, layoutSize) {
-            progressPlaceables.forEach { placeable ->
-                placeable.placeRelative(placeable.center(layoutSize))
+        val width = constraints.maxWidth
+        val height = constraints.maxHeight
+        layout(width, height) {
+            indicatorPlaceables.forEach { placeable ->
+                placeable.placeRelative(placeable.center(width, height))
             }
             textPlaceables.forEach { placeable ->
-                placeable.placeRelative(placeable.center(layoutSize))
+                placeable.placeRelative(placeable.center(width, height))
             }
         }
     }
 }
 
-private fun IntSize.max() = maxOf(width, height)
+@Composable
+private fun RatingText(
+    rating: String,
+    largeText: Boolean,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        modifier = modifier.wrapContentSize(),
+        text = buildAnnotatedString {
+            append(rating)
+            withStyle(
+                SpanStyle(
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                    fontSize = MaterialTheme.typography.labelSmall.fontSize
+                )
+            ) {
+                append(stringResource(R.string.rating_out_of_ten))
+            }
+        },
+        color = MaterialTheme.colorScheme.onBackground,
+        style = if (largeText) {
+            MaterialTheme.typography.bodyLarge
+        } else {
+            MaterialTheme.typography.bodySmall
+        }
+    )
+}
 
-private fun Placeable.center(diameter: Int): IntOffset {
-    val centerPos = diameter / 2
-    val xPos = centerPos - (width / 2)
-    val yPos = centerPos - (height / 2)
-    return IntOffset(xPos, yPos)
+@Composable
+private fun RatingIndicator(rating: Int, modifier: Modifier = Modifier) {
+    require(rating in 0..10) { "Unexpected rating: $rating" }
+    val dashColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+    val stroke = LocalDensity.current.run { Stroke(3.dp.toPx()) }
+
+    Canvas(
+        modifier = modifier
+            .fillMaxSize()
+            .aspectRatio(1f)
+    ) {
+        val spacing = 10f
+        val sweepAngle = (360f - (spacing * 10)) / 10
+        var startAngle = 270f + (spacing / 2)
+        repeat(10) {
+            drawArc(
+                color = dashColor,
+                style = stroke,
+                startAngle = startAngle,
+                sweepAngle = sweepAngle,
+                useCenter = false
+            )
+            startAngle += (sweepAngle + spacing)
+        }
+        drawArc(
+            color = getColorFor(rating),
+            style = stroke,
+            startAngle = 270f + (spacing / 2),
+            sweepAngle = when (rating) {
+                0 -> 0f
+                10 -> 360f
+                else -> (rating * (sweepAngle + spacing)) - spacing
+            },
+            useCenter = false
+        )
+    }
+}
+
+private fun getColorFor(rating: Int) = when (rating) {
+    1 -> CyanAzure
+    2 -> Liberty
+    3 -> RoyalPurple
+    4 -> Plum
+    5 -> BittersweetShimmer
+    6 -> DarkCoral
+    7 -> Bronze
+    8 -> SatinGold
+    9 -> BudGreen
+    10 -> PolishedPine
+    else -> Color.Unspecified
+}
+
+private fun Placeable.center(layoutWidth: Int, layoutHeight: Int) =
+    IntOffset(
+        x = (layoutWidth / 2) - (width / 2),
+        y = (layoutHeight / 2) - (height / 2)
+    )
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewRatingZero() {
+    Rating(
+        modifier = Modifier.size(48.dp),
+        rating = 0
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewRating() {
-    Rating(rating = 10.0, largeText = true)
+fun PreviewRatingTen() {
+    Rating(
+        modifier = Modifier.size(56.dp),
+        rating = 10,
+        largeText = true
+    )
 }

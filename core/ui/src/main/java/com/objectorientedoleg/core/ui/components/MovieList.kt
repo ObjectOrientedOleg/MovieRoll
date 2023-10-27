@@ -81,6 +81,7 @@ private fun MovieExtraLargeItem(
                 onClick = { onClick(movieItem) }
             )
             Rating(
+                modifier = Modifier.size(56.dp),
                 rating = movieItem.voteAverage,
                 largeText = true
             )
@@ -160,7 +161,10 @@ private fun MovieMediumItem(
                 contentDescription = movieItem.title,
                 onClick = { onClick(movieItem) }
             )
-            Rating(movieItem.voteAverage)
+            Rating(
+                modifier = Modifier.size(48.dp),
+                rating = movieItem.voteAverage
+            )
         }
         Spacer(Modifier.height(12.dp))
         Text(
