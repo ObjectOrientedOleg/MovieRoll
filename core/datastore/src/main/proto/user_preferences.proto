@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option java_package = "com.objectorientedoleg.core.datastore";
+option java_multiple_files = true;
+
+message UserPreferences {
+
+  DarkThemeConfig dark_theme_config = 1;
+  bool use_dynamic_color = 2;
+
+  enum DarkThemeConfig {
+    FOLLOW_SYSTEM = 0;
+    ENABLED = 1;
+    DISABLED = 2;
+  }
+}
