@@ -50,4 +50,10 @@ internal interface InternalDataModule {
     fun bindsSynchronizer(
         impl: SynchronizerImpl
     ): Synchronizer
+
+    @Binds
+    @Singleton
+    fun bindsUserDataRepository(
+        impl: UserDataRepositoryImpl
+    ): UserDataRepository
 }

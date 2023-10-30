@@ -1,12 +1,12 @@
-package com.objectorientedoleg.core.datastore
+package com.objectorientedoleg.core.data.repository
 
 import com.objectorientedoleg.core.model.DarkThemeConfig
-import com.objectorientedoleg.core.model.UserData
+import com.objectorientedoleg.core.model.UserTheme
 import kotlinx.coroutines.flow.Flow
 
-interface MovieRollPreferencesDataSource {
+interface UserDataRepository {
 
-    val userData: Flow<UserData>
+    val userTheme: Flow<UserTheme>
 
     suspend fun setDarkThemePreference(darkThemeConfig: DarkThemeConfig)
 

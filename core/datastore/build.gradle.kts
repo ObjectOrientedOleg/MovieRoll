@@ -62,6 +62,8 @@ protobuf {
 }
 
 dependencies {
+    implementation(project(":core:model"))
+
     implementation(libs.androidx.dataStore)
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.coroutines.android)
