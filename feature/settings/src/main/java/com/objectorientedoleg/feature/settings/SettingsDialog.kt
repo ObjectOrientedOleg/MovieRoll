@@ -92,7 +92,7 @@ private fun ColumnScope.SettingsLoadedContent(
     onDarkThemePreferenceClick: (DarkThemeConfig) -> Unit,
     onDynamicColorPreferenceClick: (Boolean) -> Unit
 ) {
-    RadioButtonGroup(title = stringResource(R.string.dark_theme_preference)) {
+    RadioButtonGroup(title = stringResource(R.string.dark_theme)) {
         DarkThemeConfig.values().forEach { config ->
             RadioButtonRow(
                 text = stringResource(config.stringRes),
