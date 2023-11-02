@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title">Settings</string>
+    <string name="dark_theme_preference">Dark theme preference</string>
+    <string name="follow_system">Follow system</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
+    <string name="use_dynamic_color">Use dynamic color</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">OK</string>
+</resources>

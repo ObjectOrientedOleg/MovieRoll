@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.objectorientedoleg.feature.moviedetails"
+    namespace = "com.objectorientedoleg.feature.settings"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -54,7 +54,7 @@ kapt {
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:data"))
-    implementation(project(":core:domain"))
+    implementation(project(":core:model"))
     implementation(project(":core:ui"))
 
     implementation(libs.androidx.hilt.navigation.compose)

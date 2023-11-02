@@ -1,8 +1,8 @@
 package com.objectorientedoleg.core.ui.components
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,7 +16,7 @@ import com.objectorientedoleg.core.ui.R
 fun MovieRollTopBar(
     title: String,
     onSearchClick: () -> Unit,
-    onAccountClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     CenterAlignedTopAppBar(
@@ -36,10 +36,10 @@ fun MovieRollTopBar(
             }
         },
         actions = {
-            IconButton(onClick = onAccountClick) {
+            IconButton(onClick = onSettingsClick) {
                 Icon(
-                    imageVector = Icons.Filled.AccountCircle,
-                    contentDescription = stringResource(R.string.account)
+                    imageVector = Icons.Filled.Settings,
+                    contentDescription = stringResource(R.string.settings)
                 )
             }
         },

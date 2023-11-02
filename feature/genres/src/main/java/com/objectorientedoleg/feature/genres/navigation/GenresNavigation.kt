@@ -10,7 +10,7 @@ const val GenresRoute = "genres_route"
 
 fun NavGraphBuilder.genresGraph(
     onSearchClick: () -> Unit,
-    onAccountClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     onMovieClick: (String) -> Unit,
     nestedGraphs: NavGraphBuilder.() -> Unit
 ) {
@@ -21,7 +21,7 @@ fun NavGraphBuilder.genresGraph(
         composable(route = GenresRoute) {
             GenresRoute(
                 onSearchClick = onSearchClick,
-                onAccountClick = onAccountClick,
+                onSettingsClick = onSettingsClick,
                 onMovieClick = onMovieClick
             )
         }

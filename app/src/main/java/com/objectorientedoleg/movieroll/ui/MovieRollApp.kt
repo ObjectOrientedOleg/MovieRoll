@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,6 +25,7 @@ import com.objectorientedoleg.feature.genres.navigation.genresGraph
 import com.objectorientedoleg.feature.home.navigation.HomeGraphRoute
 import com.objectorientedoleg.feature.home.navigation.homeGraph
 import com.objectorientedoleg.feature.moviedetails.navigation.movieDetailsScreen
+import com.objectorientedoleg.feature.settings.SettingsDialog
 
 @Composable
 fun MovieRollApp(syncManager: SyncManager) {
@@ -30,6 +34,15 @@ fun MovieRollApp(syncManager: SyncManager) {
     val isSyncing by appState.isSyncing.collectAsStateWithLifecycle()
 
     MovieRollGradientBackground {
+        var showSettingsDialog by rememberSaveable {
+            mutableStateOf(false)
+        }
+        if (showSettingsDialog) {
+            SettingsDialog {
+                showSettingsDialog = false
+            }
+        }
+
         Scaffold(
             bottomBar = {
                 if (showBottomBar) {
@@ -52,8 +65,9 @@ fun MovieRollApp(syncManager: SyncManager) {
                 } else {
                     MovieRollNavHost(
                         navController = appState.navController,
-                        onNavigateBack = appState::navigateBack,
-                        onNavigateToMovieDetails = appState::navigateToMovieDetails
+                        navigateBack = appState::navigateBack,
+                        navigateToMovieDetails = appState::navigateToMovieDetails,
+                        navigateToSettings = { showSettingsDialog = true }
                     )
                 }
             }
@@ -90,8 +104,9 @@ private fun MovieRollBottomBar(
 @Composable
 private fun MovieRollNavHost(
     navController: NavHostController,
-    onNavigateBack: () -> Unit,
-    onNavigateToMovieDetails: (String) -> Unit,
+    navigateBack: () -> Unit,
+    navigateToSettings: () -> Unit,
+    navigateToMovieDetails: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -101,17 +116,17 @@ private fun MovieRollNavHost(
     ) {
         homeGraph(
             onSearchClick = {},
-            onAccountClick = {},
-            onMovieClick = onNavigateToMovieDetails
+            onSettingsClick = navigateToSettings,
+            onMovieClick = navigateToMovieDetails
         ) {
-            movieDetailsScreen(onBackClick = onNavigateBack)
+            movieDetailsScreen(onBackClick = navigateBack)
         }
         genresGraph(
             onSearchClick = {},
-            onAccountClick = {},
-            onMovieClick = onNavigateToMovieDetails
+            onSettingsClick = navigateToSettings,
+            onMovieClick = navigateToMovieDetails
         ) {
-            movieDetailsScreen(onBackClick = onNavigateBack)
+            movieDetailsScreen(onBackClick = navigateBack)
         }
     }
 }

@@ -26,7 +26,7 @@ import kotlinx.collections.immutable.ImmutableList
 @Composable
 internal fun GenresRoute(
     onSearchClick: () -> Unit,
-    onAccountClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     onMovieClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GenresViewModel = hiltViewModel()
@@ -37,7 +37,7 @@ internal fun GenresRoute(
         modifier = modifier,
         uiState = uiState,
         onSearchClick = onSearchClick,
-        onAccountClick = onAccountClick,
+        onSettingsClick = onSettingsClick,
         onMovieClick = onMovieClick,
         onRestoreTabState = viewModel::restoreTabState,
         onSaveTabState = viewModel::saveTabState,
@@ -50,7 +50,7 @@ internal fun GenresRoute(
 private fun GenresScreen(
     uiState: GenresUiState,
     onSearchClick: () -> Unit,
-    onAccountClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     onMovieClick: (String) -> Unit,
     onRestoreTabState: () -> Int,
     onSaveTabState: (Int) -> Unit,
@@ -62,7 +62,7 @@ private fun GenresScreen(
         MovieRollTopBar(
             title = stringResource(R.string.genres),
             onSearchClick = onSearchClick,
-            onAccountClick = onAccountClick
+            onSettingsClick = onSettingsClick
         )
         Box(modifier = Modifier.fillMaxSize()) {
             when (uiState) {

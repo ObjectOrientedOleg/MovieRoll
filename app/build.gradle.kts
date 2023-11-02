@@ -70,6 +70,7 @@ dependencies {
     implementation(project(":feature:genres"))
     implementation(project(":feature:home"))
     implementation(project(":feature:moviedetails"))
+    implementation(project(":feature:settings"))
 
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.activity.compose)

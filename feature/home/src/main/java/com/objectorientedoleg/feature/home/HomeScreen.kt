@@ -35,7 +35,7 @@ import kotlinx.collections.immutable.ImmutableList
 @Composable
 internal fun HomeRoute(
     onSearchClick: () -> Unit,
-    onAccountClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     onMovieClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
@@ -46,7 +46,7 @@ internal fun HomeRoute(
         modifier = modifier,
         uiState = uiState,
         onSearchClick = onSearchClick,
-        onAccountClick = onAccountClick,
+        onSettingsClick = onSettingsClick,
         onMovieClick = onMovieClick
     )
 }
@@ -55,7 +55,7 @@ internal fun HomeRoute(
 private fun HomeScreen(
     uiState: HomeUiState,
     onSearchClick: () -> Unit,
-    onAccountClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     onMovieClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -63,7 +63,7 @@ private fun HomeScreen(
         MovieRollTopBar(
             title = stringResource(R.string.home_title),
             onSearchClick = onSearchClick,
-            onAccountClick = onAccountClick
+            onSettingsClick = onSettingsClick
         )
         Box(modifier = Modifier.fillMaxSize()) {
             when (uiState) {

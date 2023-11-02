@@ -10,7 +10,7 @@ const val HomeRoute = "home_route"
 
 fun NavGraphBuilder.homeGraph(
     onSearchClick: () -> Unit,
-    onAccountClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     onMovieClick: (String) -> Unit,
     nestedGraphs: NavGraphBuilder.() -> Unit
 ) {
@@ -21,7 +21,7 @@ fun NavGraphBuilder.homeGraph(
         composable(route = HomeRoute) {
             HomeRoute(
                 onSearchClick = onSearchClick,
-                onAccountClick = onAccountClick,
+                onSettingsClick = onSettingsClick,
                 onMovieClick = onMovieClick
             )
         }
