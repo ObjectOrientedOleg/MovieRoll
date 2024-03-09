@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.MovieRoll" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="NightAdjusted.Theme.MovieRoll" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.MovieRoll" parent="NightAdjusted.Theme.MovieRoll" />
+
+    <style name="NightAdjusted.Theme.Splash" parent="Theme.SplashScreen">
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+    </style>
+
+    <style name="Theme.MovieRoll.Splash" parent="NightAdjusted.Theme.Splash">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_screen</item>
+        <item name="postSplashScreenTheme">@style/Theme.MovieRoll</item>
+    </style>
+
 </resources>
