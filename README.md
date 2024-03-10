@@ -14,7 +14,8 @@ Movie Roll is a work in progress.
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+<img src="screenshots/Screenshot_20240309-184917.png" width="346" height="750"> <img src="screenshots/Screenshot_20240309-184902.png" width="346" height="750">
+<img src="screenshots/Screenshot_20240309-185105.png" width="346" height="750"> <img src="screenshots/Screenshot_20240309-184944.png" width="346" height="750">
 
 
 ## Installation
